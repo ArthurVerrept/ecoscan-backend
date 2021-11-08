@@ -13,7 +13,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', '/src/database/migrations'],
   rules: {
     // enforce no semicolons
     "@typescript-eslint/semi": ["error", "never"],
