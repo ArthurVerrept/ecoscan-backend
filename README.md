@@ -1,13 +1,19 @@
 ## Description
 
-Netscapes backend repo
+Netscapes backend repo :tada:
 
 
-## Setup
+<br>
+<br>
+
+# Setup
 Before running the api, there are a few things we need to download:
 1. [Node v12+](https://nodejs.org/en/)
 2. [Homebrew](https://brew.sh/)
 3. [pgAdmin](https://www.pgadmin.org/download/)
+
+<br>
+
 ### 1. Install & Run Postgresql:
 Check you don't already have postgres installed:
 ```bash
@@ -80,4 +86,26 @@ Run api:
 $ npm run start:dev
 ```
 
+<br>
+<br>
+
+# Development
+## Creating new Controllers, Modules, and Services
+The easist way to create new controllers, modules and services is to use the nestjs cli. Simply write the command below replacing the necessary parts for your desired file to be generated.
+```bash
+nest g <schematic> <module-name>
+```
+This will also hook up all the modules together without you having to do anything.
+[Docs for this command](https://docs.nestjs.com/cli/usages#nest-generate)
+
+## Updating the DB
+The database tables are created based on what we define in our entities folder. every file that ends with .entity.ts is db table, when the migrations are generated. <br><br>To change a table, simply alter/ create an .entity.ts file and run:
+```bash
+npm run migration:generate
+```
+Once this is finished run:
+```bash
+npm run migration:run
+``` 
+This will run your new migration and change your local database
 
