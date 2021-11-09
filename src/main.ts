@@ -3,7 +3,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  console.log(__dirname + '/**/*.entity.js')
   const app = await NestFactory.create(AppModule)
 
   // swagger setup

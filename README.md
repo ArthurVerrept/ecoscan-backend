@@ -1,6 +1,6 @@
 ## Description
 
-Netscapes backend repo :tada:
+Netscapes backend repo 🎉
 
 
 <br>
@@ -80,8 +80,8 @@ Finally all that's left to do is load the tables:
 $ npm run migration:run
 ```
 
-## Running the API
-Run api:
+## Running the API 🏃
+Run api in watch mode:
 ```bash
 $ npm run start:dev
 ```
@@ -99,13 +99,21 @@ This will also hook up all the modules together without you having to do anythin
 [Docs for this command](https://docs.nestjs.com/cli/usages#nest-generate)
 
 ## Updating the DB
-The database tables are created based on what we define in our entities folder. every file that ends with .entity.ts is db table, when the migrations are generated. <br><br>To change a table, simply alter/ create an .entity.ts file and run:
+The database tables are created based on what we define in our entities folder. every file that ends with .entity.ts is a db table. Since locally we are using typeorm's synchronize feature it will ✨automagically✨ update the postgres database. <br><br>To change a table, simply alter/ create an .entity.ts file and rebuild the dist folder if you are not running in watch mode:
+```bash
+npm run build
+```
+
+However if you wish to work with migrations you must first go to - <i>src/database/database.module.ts</i> and set synchronise to false: <br>
+<i>synchronise: false</i>
+
+then you can run:
 ```bash
 npm run migration:generate
 ```
-Once this is finished run:
+Once this is finished run to your new migration and change your local database:
 ```bash
 npm run migration:run
 ``` 
-This will run your new migration and change your local database
+
 
