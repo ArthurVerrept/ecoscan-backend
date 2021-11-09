@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 import User from './entities/user.entity'
 
 @Injectable()
@@ -13,9 +14,9 @@ export class UsersService {
     return this.usersRepository.find() // SELECT * from user
   }
 
-  async findById(id: number): Promise<User> {
+  async getOneById(id: number): Promise<User> {
     try {
-      const user = await this.usersRepository.findOne(id) // SELECT * from user WHERE id = ?
+      const user = await this.usersRepository.findOneOrFail(id) // SELECT * from user WHERE id = ?
       return user
     } catch (err) {
       throw err
@@ -23,22 +24,26 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = await this.usersRepository.create({ id: Date.now(), ...createUserDto })
+    // TODO: GENERATE PROPER ID
+    const newUser = await this.usersRepository.create({ ...createUserDto })
 
     // Saves a given entity in the database.
     // If entity does not exist in the database
     // then inserts, otherwise update
     return this.usersRepository.save(newUser) // INSERT
-
   }
 
-  async updateUser(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = await this.usersRepository.create({ id: Date.now(), ...createUserDto })
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    let user = await this.getOneById(id)
+
+    user = {
+      id: id,
+      ...updateUserDto
+    }
 
     // Saves a given entity in the database.
     // If entity does not exist in the database
     // then inserts, otherwise update
-    return this.usersRepository.save(newUser) // INSERT
-
+    return this.usersRepository.save(user) // UPDATE
   }
 }
