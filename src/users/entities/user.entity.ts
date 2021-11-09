@@ -8,8 +8,8 @@ class User {
     @Column()
     name: string
 
-    @Column({ nullable: true })
-    email?: string
+    @Column()
+    email: string
 }
 
 export default User

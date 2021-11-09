@@ -8,7 +8,7 @@ import { DatabaseModule } from './database/database.module'
 @Module({
   imports: [
     UsersModule, 
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot(),
     DatabaseModule
   ],
   controllers: [AppController],

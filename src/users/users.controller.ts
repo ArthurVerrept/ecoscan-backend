@@ -7,20 +7,25 @@ import { UsersService } from './users.service'
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Get()
-  getUsers(): User[] {
-    return this.userService.findAll()
+  async getUsers(): Promise<User[]> {
+    return await this.userService.getAll()
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: string): User {
-    return this.userService.findById(Number(id))
+  async getUserById(@Param('id') id: string): Promise<User> {
+    return await this.userService.findById(Number(id))
   }
 
   @Post()
-  createUser(@Body() body: CreateUserDto): User {
-    return this.userService.createUser(body)
+  async createUser(@Body() body: CreateUserDto): Promise<User> {
+    return await this.userService.createUser(body)
+  }
+
+  @Post()
+  async updateUser(@Body() body: CreateUserDto): Promise<User> {
+    return await this.userService.updateUser(body)
   }
 }

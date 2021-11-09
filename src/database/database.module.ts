@@ -15,9 +15,13 @@ import { TypeOrmModule } from '@nestjs/typeorm'
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [
-            __dirname + '/src/**/*.entity.ts',
-          ],
-          synchronize: false,
+            'dist/src/**/*.entity.js',
+        ],
+        // synchronize should only be used for local development
+        // this automatically changes the db on save if entities 
+        // are different, in prod you could lose whole tables
+        // accidentally if you have this on
+        synchronize:true
       })
     }),
   ],

@@ -8,17 +8,18 @@ const config = {
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
+  // where to find the entities to make migrations
   entities: [
     __dirname + '/src/**/*.entity.ts',
   ],
+  // where to find migrations to run them
   migrations:[
     'src/database/migrations/*.ts'
   ],
-  migrationsRun: true,
+  // where to put migrations when they are created
   cli:{
     migrationsDir: 'src/database/migrations'
-  },
-  synchronize: false,
+  }
 }
 
 export default config
