@@ -40,7 +40,8 @@ $ postgres=# \du
 This should say return a table with your role name on the left.
 
 ### 3. Create Server 
-- Open pgAdmin (if this is tour first time it will prompt you to create a master password, make this whatever you want)
+- Open [pgAdmin](https://www.pgadmin.org/download/)
+ (if this is tour first time it will prompt you to create a master password, make this whatever you want)
 - Create a new server by right clicking on servers
 - Set the name as whatever you like
 - Under "Connection" set the Hostname as <b>localhost</b>
