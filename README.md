@@ -39,15 +39,15 @@ $ postgres=# \du
 ```
 This should say return a table with your role name on the left.
 
-### 3. Install pgAdmin and Create Database
+### 3. Create Server 
 - Open pgAdmin (if this is tour first time it will prompt you to create a master password, make this whatever you want)
 - Create a new server by right clicking on servers
-- In "General" set the name as <b>netscapes-api</b>
+- Set the name as whatever you like
 - Under "Connection" set the Hostname as <b>localhost</b>
 - Set the Username as <b>The role name you found in step 2</b>
 - Leave/ set the port as <b>5432</b>
 
-### 3. Tooling Install
+### 5. Tooling Install
 [<u>Nestjs cli:</u>](https://docs.nestjs.com/cli/overview)
 ```bash
 $ npm install -g @nestjs/cli
@@ -63,22 +63,22 @@ $ npm i -g typeorm
 $ npm install -g ts-node
 ```
 
-### 4. Setup Environment Variables
+### 6. Setup Environment Variables
 Finally we can open the actual project!
 - Find the <i>".env-example"</i> file in the root of the project, and rename it to <i>".env"</i>.
 - Open it and replace <b>username</b> to be your user from step 2
 
-### 5. Install packages
+### 7. Install packages
 Using npm install the packages required:
 ```bash
 $ npm i
 ```
 
-### 6. Run Database Migrations
+<!-- ### 8. Run Database Migrations
 Finally all that's left to do is load the tables:
 ```bash
 $ npm run migration:run
-```
+``` -->
 
 ## Running the API 🏃
 Run api in watch mode:
