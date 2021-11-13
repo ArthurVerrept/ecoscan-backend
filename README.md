@@ -46,8 +46,11 @@ This should say return a table with your role name on the left.
 - Under "Connection" set the Hostname as <b>localhost</b>
 - Set the Username as <b>The role name you found in step 2</b>
 - Leave/ set the port as <b>5432</b>
+<br>
 
-### 5. Tooling Install
+You should now see a server with a database called postgres in it. This means you're ready to move on to step 4 🎊
+
+### 4. Tooling Install
 [<u>Nestjs cli:</u>](https://docs.nestjs.com/cli/overview)
 ```bash
 $ npm install -g @nestjs/cli
@@ -63,12 +66,12 @@ $ npm i -g typeorm
 $ npm install -g ts-node
 ```
 
-### 6. Setup Environment Variables
+### 5. Setup Environment Variables
 Finally we can open the actual project!
 - Find the <i>".env-example"</i> file in the root of the project, and rename it to <i>".env"</i>.
 - Open it and replace <b>username</b> to be your user from step 2
 
-### 7. Install packages
+### 6. Install packages
 Using npm install the packages required:
 ```bash
 $ npm i
