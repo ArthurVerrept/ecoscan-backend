@@ -10,11 +10,11 @@ export class UsersService {
   constructor(@InjectRepository(User) private usersRepository: Repository<User>){
   }
 
-  getAll(): Promise<User[]> {
+  findAll(): Promise<User[]> {
     return this.usersRepository.find() // SELECT * from user
   }
 
-  async getOneById(id: number): Promise<User> {
+  async findOneById(id: number): Promise<User> {
     try {
       const user = await this.usersRepository.findOneOrFail(id) // SELECT * from user WHERE id = ?
       return user
@@ -34,7 +34,7 @@ export class UsersService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    let user = await this.getOneById(id)
+    let user = await this.findOneById(id)
 
     user = {
       id: id,
