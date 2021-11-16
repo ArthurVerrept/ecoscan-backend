@@ -21,7 +21,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
         // this automatically changes the db on save if entities 
         // are different, in prod you could lose whole tables
         // accidentally if you have this on
-        synchronize:true
+        synchronize: true
       })
     }),
   ],
