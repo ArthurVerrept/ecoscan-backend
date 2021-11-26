@@ -1,5 +1,8 @@
 // this file is used by typeorm to generate migrations
 // https://github.com/typeorm/typeorm/blob/master/docs/using-cli.md#installing-cli
+
+import { SnakeNamingStrategy } from "typeorm-naming-strategies"
+
 // not needed to run api
 const config = {
   type: 'postgres',
@@ -19,7 +22,10 @@ const config = {
   // where to put migrations when they are created
   cli:{
     migrationsDir: 'src/database/migrations'
-  }
+  },
+  // tell migrations to use naming strategy for db
+  // naming conventions
+  namingStrategy: new SnakeNamingStrategy(),
 }
 
 export default config

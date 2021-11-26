@@ -120,4 +120,18 @@ Once this is finished run to your new migration and change your local database:
 npm run migration:run
 ``` 
 
+<br>
+<br>
+<br>
+
+## FOR FUTURE ARTHUR (when getting API hosted):
+<ol>
+    <li><b>Set synchronise to false</b></li>
+    <li>Clear database of everything</li>
+    <li>Run generate migrations script</li>
+    - This will create a migration to build tables on production
+    <li>Get that shit hosted, run migrations and boom ur done</li>
+</ol>
+
+
 

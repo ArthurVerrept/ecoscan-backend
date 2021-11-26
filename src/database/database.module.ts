@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
         entities: [
             'dist/src/**/*.entity.js',
         ],
+        namingStrategy: new SnakeNamingStrategy(),
         // synchronize should only be used for local development
         // this automatically changes the db on save if entities 
         // are different, in prod you could lose whole tables
