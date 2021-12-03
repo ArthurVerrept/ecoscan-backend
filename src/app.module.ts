@@ -4,7 +4,7 @@ import { AppService } from './app.service'
 import { UsersModule } from './users/users.module'
 import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from './database/database.module'
-import { GoogleAuthenticationModule } from './google-authentication/google-authentication.module';
+import { GoogleAuthenticationModule } from './google-authentication/googleAuthentication.module'
 
 @Module({
   imports: [

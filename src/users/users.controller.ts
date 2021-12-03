@@ -12,13 +12,13 @@ export class UsersController {
 
   @Get()
   async getUsers(): Promise<User[]> {
-    return await this.userService.findAll()
+    return await this.userService.getAll()
   }
 
   @Get(':id')
   async getUserById(@Param('id') id: string): Promise<User> {
     // TODO: come back to Number(id) look at pipes documentation
-    return await this.userService.findOneById(Number(id))
+    return await this.userService.getOneById(Number(id))
   }
 
   @Post()
@@ -33,7 +33,7 @@ export class UsersController {
       return await this.userService.updateUser(Number(id), body)
     } else {
       // TODO: come back to Number(id) look at pipes documentation
-      return await this.userService.findOneById(Number(id))
+      return await this.userService.getOneById(Number(id))
     }
   }
 }
