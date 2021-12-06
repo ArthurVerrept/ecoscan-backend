@@ -12,7 +12,7 @@ class User {
     email: string
 
     @Column({ default: false })
-    createdWithGoogle: boolean
+    isCreatedWithGoogle: boolean
 }
 
 export default User

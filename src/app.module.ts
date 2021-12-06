@@ -5,13 +5,15 @@ import { UsersModule } from './users/users.module'
 import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from './database/database.module'
 import { GoogleAuthenticationModule } from './google-authentication/googleAuthentication.module'
+import { ProductsModule } from './products/products.module'
 
 @Module({
   imports: [
     UsersModule, 
     ConfigModule.forRoot(),
     DatabaseModule,
-    GoogleAuthenticationModule
+    GoogleAuthenticationModule,
+    ProductsModule
   ],
   controllers: [AppController],
   providers: [AppService],

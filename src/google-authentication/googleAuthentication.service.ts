@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Auth, google } from 'googleapis'
 import User from 'src/users/entities/user.entity'
@@ -52,8 +52,26 @@ export class GoogleAuthenticationService {
 
   // TODO: sessions
   async handleRegisteredUser(user: User) {
+    if (!user.isCreatedWithGoogle) {
+      throw new UnauthorizedException()
+    }
     // do jwt shit here
     console.log('handle here')
     return user
   }
+
+  // async getCookiesForUser(user: User) {
+  //   const accessTokenCookie = this.authenticationService.getCookieWithJwtAccessToken(user.id)
+  //   const {
+  //     cookie: refreshTokenCookie,
+  //     token: refreshToken
+  //   } = this.authenticationService.getCookieWithJwtRefreshToken(user.id)
+   
+  //   await this.usersService.setCurrentRefreshToken(refreshToken, user.id)
+   
+  //   return {
+  //     accessTokenCookie,
+  //     refreshTokenCookie
+  //   }
+  // }
 }

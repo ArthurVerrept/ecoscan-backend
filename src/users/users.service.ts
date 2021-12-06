@@ -20,7 +20,7 @@ export class UsersService {
 
   async createWithGoogle(name: string, email:string): Promise<User> {
     // TODO: GENERATE PROPER ID
-    const newUser = await this.usersRepository.create({ name, email, createdWithGoogle: true })
+    const newUser = await this.usersRepository.create({ name, email, isCreatedWithGoogle: true })
 
     // Saves a given entity in the database.
     // If entity does not exist in the database
