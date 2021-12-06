@@ -15,10 +15,10 @@ class Product {
     productRating: number
 
     @Column()
-    brandRating: string
+    brandRating: number
 
     @Column()
-    productQuality: string
+    productQuality: number
 
     @Column()
     img: string
