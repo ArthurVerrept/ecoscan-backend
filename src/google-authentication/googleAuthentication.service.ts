@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Auth, google } from 'googleapis'
+import { AuthService } from 'src/auth/auth.service'
 import User from 'src/users/entities/user.entity'
 import { UsersService } from 'src/users/users.service'
 
@@ -10,6 +11,7 @@ export class GoogleAuthenticationService {
   constructor(
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
+    private readonly authService: AuthService
     // private readonly authenticationService: AuthenticationService
   ) {
     const clientID = this.configService.get('GOOGLE_AUTH_CLIENT_ID')
@@ -31,7 +33,8 @@ export class GoogleAuthenticationService {
     // since above we used getPayload() that returns us basic user info
     const email = tokenInfo.email
     const name = tokenInfo.name
- 
+    const picture = tokenInfo.picture
+
     // if we can get the user by email
     try {
       const user = await this.usersService.getByEmail(email)
@@ -43,7 +46,7 @@ export class GoogleAuthenticationService {
       if (error.status !== 404) {
         throw new error
       }
-      const user = await this.usersService.createWithGoogle(name, email)
+      const user = await this.usersService.createWithGoogle(name, email, picture)
    
       // then sign them in and create session
       return this.handleRegisteredUser(user)
@@ -55,23 +58,12 @@ export class GoogleAuthenticationService {
     if (!user.isCreatedWithGoogle) {
       throw new UnauthorizedException()
     }
-    // do jwt shit here
-    console.log('handle here')
-    return user
-  }
 
-  // async getCookiesForUser(user: User) {
-  //   const accessTokenCookie = this.authenticationService.getCookieWithJwtAccessToken(user.id)
-  //   const {
-  //     cookie: refreshTokenCookie,
-  //     token: refreshToken
-  //   } = this.authenticationService.getCookieWithJwtRefreshToken(user.id)
-   
-  //   await this.usersService.setCurrentRefreshToken(refreshToken, user.id)
-   
-  //   return {
-  //     accessTokenCookie,
-  //     refreshTokenCookie
-  //   }
-  // }
+    const token = this.authService.getCookieWithJwtToken(user)
+
+    return {
+      user,
+      token
+    }
+  }
 }
