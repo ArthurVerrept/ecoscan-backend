@@ -33,7 +33,6 @@ export class GoogleAuthenticationService {
     // since above we used getPayload() that returns us basic user info
     const email = tokenPayload.email
     const name = tokenPayload.name
-    const picture = tokenPayload.picture
 
     // if we can get the user by email
     try {
@@ -46,7 +45,7 @@ export class GoogleAuthenticationService {
       if (error.status !== 404) {
         throw new error
       }
-      const user = await this.usersService.createWithGoogle(name, email, picture)
+      const user = await this.usersService.createWithGoogle(name, email)
    
       // then sign them in and create token
       return this.handleRegisteredUser(user)

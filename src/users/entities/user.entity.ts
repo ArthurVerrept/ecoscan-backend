@@ -8,9 +8,6 @@ class User {
     @Column()
     name: string
 
-    @Column()
-    picture: string
-
     @Column({ unique: true })
     email: string
 
