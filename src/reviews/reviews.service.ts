@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import User from 'src/users/entities/user.entity'
 import { Repository } from 'typeorm'
@@ -13,6 +13,7 @@ export class ReviewsService {
     async createReview(addReviewDto: CreateReviewDto, user: User): Promise<Review> {
         const newReview = await this.reviewRepository.create({ ...addReviewDto })
         newReview.user = user
-        return this.reviewRepository.save(newReview)
+        await this.reviewRepository.save(newReview)
+        return
     }
 }

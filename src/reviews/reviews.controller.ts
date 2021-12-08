@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common'
+import { Body, Controller, Post, UseGuards, Request, HttpCode } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
 import { CreateReviewDto } from './dto/createReview.dto'
@@ -11,6 +11,7 @@ export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService){}
 
     @UseGuards(JwtAuthGuard)
+    @HttpCode(200)
     @Post()
     async createReview(@Body() body: CreateReviewDto, @Request() req): Promise<Review> {
         return await this.reviewsService.createReview(body, req.user.id)
