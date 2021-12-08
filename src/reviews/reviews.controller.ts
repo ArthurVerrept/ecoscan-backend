@@ -13,6 +13,6 @@ export class ReviewsController {
     @UseGuards(JwtAuthGuard)
     @Post()
     async createReview(@Body() body: CreateReviewDto, @Request() req): Promise<Review> {
-        return await this.reviewsService.createReview(body, req.user)
+        return await this.reviewsService.createReview(body, req.user.id)
     }
 }

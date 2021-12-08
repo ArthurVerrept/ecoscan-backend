@@ -11,9 +11,8 @@ export class ReviewsService {
     }
     
     async createReview(addReviewDto: CreateReviewDto, user: User): Promise<Review> {
-        const newReview = await this.reviewRepository.create({ ...addReviewDto, user })
-
+        const newReview = await this.reviewRepository.create({ ...addReviewDto })
+        newReview.user = user
         return this.reviewRepository.save(newReview)
-      }
-
+    }
 }

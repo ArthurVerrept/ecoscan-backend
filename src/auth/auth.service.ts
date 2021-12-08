@@ -10,7 +10,7 @@ export class AuthService {
 
 
     public getCookieWithJwtToken(user: User) {
-        const payload = { name: user.name, sub: user.id } 
+        const payload = { sub: user.id } 
         const token = this.jwtService.sign(payload)
         return token
     }

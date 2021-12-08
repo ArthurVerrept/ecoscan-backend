@@ -15,7 +15,7 @@ export class UsersService {
   }
 
   async getOneById(id: number): Promise<User> {
-      return await this.usersRepository.findOneOrFail(id) // SELECT * from user WHERE id = ?
+      return await this.usersRepository.findOneOrFail(id, { relations: ['reviews'] }) // SELECT * from user WHERE id = ?
   }
 
   async createWithGoogle(name: string, email: string): Promise<User> {
