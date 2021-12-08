@@ -113,7 +113,7 @@ However if you wish to work with migrations you must first go to - <i>src/databa
 
 then you can run:
 ```bash
-npm run migration:generate
+npm run migration:generate <name>
 ```
 Once this is finished run to your new migration and change your local database:
 ```bash

@@ -14,13 +14,13 @@ export class UsersService {
     return this.usersRepository.find() // SELECT * from user
   }
 
+  
   async getOneById(id: number): Promise<User> {
       return await this.usersRepository.findOneOrFail(id) // SELECT * from user WHERE id = ?
   }
 
-  async createWithGoogle(name: string, email:string): Promise<User> {
-    // TODO: GENERATE PROPER ID
-    const newUser = await this.usersRepository.create({ name, email, isCreatedWithGoogle: true })
+  async createWithGoogle(name: string, email: string, picture: string): Promise<User> {
+    const newUser = await this.usersRepository.create({ name, email, picture, isCreatedWithGoogle: true })
 
     // Saves a given entity in the database.
     // If entity does not exist in the database

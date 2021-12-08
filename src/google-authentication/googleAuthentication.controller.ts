@@ -1,5 +1,4 @@
-import { Controller, ClassSerializerInterceptor, UseInterceptors, Body, Req, Res, Post } from '@nestjs/common'
-import { Request, Response } from 'express'
+import { Controller, ClassSerializerInterceptor, UseInterceptors, Body, Req, Post } from '@nestjs/common'
 import TokenVerificationDto from './dto/token-verification.dto'
 import { GoogleAuthenticationService } from './googleAuthentication.service'
 
@@ -9,17 +8,9 @@ export class GoogleAuthenticationController {
     constructor(private readonly googleAuthenticationService: GoogleAuthenticationService) {}
 
     @Post()
-    async authenticate(@Body() tokenData: TokenVerificationDto, @Req() request: Request, @Res() res: Response) {
-    // const {
-    //     accessTokenCookie,
-    //     refreshTokenCookie,
-    //     user
-    //   } = await this.googleAuthenticationService.authenticate(tokenData.token)
-   
-    //   request.headers.set('Set-Cookie', [accessTokenCookie, refreshTokenCookie])
-        // console.log(tokenData.token)
-        const user = await this.googleAuthenticationService.authenticate(tokenData.token)
-        console.log(user)
-        return user
+    async authenticate(@Body() tokenData: TokenVerificationDto) {
+        // https://github.com/dwyl/hapi-auth-jwt2/issues/82#issuecomment-129873082
+        return await this.googleAuthenticationService.authenticate(tokenData.token)
+        
     }
 }

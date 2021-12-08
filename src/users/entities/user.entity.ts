@@ -1,12 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class User {
     @PrimaryGeneratedColumn()
-    id: number
+    @Generated('uuid')
+    id: string
 
     @Column()
     name: string
+
+    @Column()
+    picture: string
 
     @Column({ unique: true })
     email: string
