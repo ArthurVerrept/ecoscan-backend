@@ -12,7 +12,6 @@ export class GoogleAuthenticationService {
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
     private readonly authService: AuthService
-    // private readonly authenticationService: AuthenticationService
   ) {
     const clientID = this.configService.get('GOOGLE_AUTH_CLIENT_ID')
     const clientSecret = this.configService.get('GOOGLE_AUTH_CLIENT_SECRET')
@@ -28,18 +27,19 @@ export class GoogleAuthenticationService {
     // verify a few conditions of the token with google
     // conditions can be read here
     // hhttps://developers.google.com/identity/sign-in/web/backend-auth#verify-the-integrity-of-the-id-token
-    const tokenInfo = await (await this.oauthClient.verifyIdToken({ idToken: token, audience: this.oauthClient._clientId })).getPayload()
-    
+    const tokenInfo = await this.oauthClient.verifyIdToken({ idToken: token, audience: this.oauthClient._clientId })
+    const tokenPayload = await tokenInfo.getPayload()
+
     // since above we used getPayload() that returns us basic user info
-    const email = tokenInfo.email
-    const name = tokenInfo.name
-    const picture = tokenInfo.picture
+    const email = tokenPayload.email
+    const name = tokenPayload.name
+    const picture = tokenPayload.picture
 
     // if we can get the user by email
     try {
       const user = await this.usersService.getByEmail(email)
       
-      // sign them in and create session
+      // sign them in and create token
       return this.handleRegisteredUser(user)
     // otherwise create them a user
     } catch (error) {
@@ -48,19 +48,18 @@ export class GoogleAuthenticationService {
       }
       const user = await this.usersService.createWithGoogle(name, email, picture)
    
-      // then sign them in and create session
+      // then sign them in and create token
       return this.handleRegisteredUser(user)
     }
   }
 
-  // TODO: sessions
   async handleRegisteredUser(user: User) {
     if (!user.isCreatedWithGoogle) {
       throw new UnauthorizedException()
     }
 
     const token = this.authService.getCookieWithJwtToken(user)
-
+    console.log(token)
     return {
       user,
       token

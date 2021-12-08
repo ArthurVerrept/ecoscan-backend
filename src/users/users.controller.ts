@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Post, Request, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import User from './entities/user.entity'
-import { Request } from 'express'
+// import { Request } from 'express'
 import { UsersService } from './users.service'
 
 @ApiTags('users')
@@ -19,10 +19,13 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getUserById(@Param('id') id: string, @Req() req: Request): Promise<User> {
-    console.log(req.user)
+  async getUserById(@Param('id', ParseIntPipe) id: number, @Request() req): Promise<User> {
     // TODO: come back to Number(id) look at pipes documentation
-    return await this.usersService.getOneById(Number(id))
+    if (req.user.id !== id) {
+      throw new ForbiddenException()
+    }
+    
+    return await this.usersService.getOneById(id)
   }
 
   @Post()
@@ -31,13 +34,13 @@ export class UsersController {
   }
 
   @Post(':id')
-  async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto): Promise<User> {
+  async updateUser(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto): Promise<User> {
     // if you send something to update
     if (body) {
-      return await this.usersService.updateUser(Number(id), body)
+      return await this.usersService.updateUser(id, body)
     } else {
       // TODO: come back to Number(id) look at pipes documentation
-      return await this.usersService.getOneById(Number(id))
+      return await this.usersService.getOneById(id)
     }
   }
 }

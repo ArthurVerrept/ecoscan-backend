@@ -14,7 +14,6 @@ export class UsersService {
     return this.usersRepository.find() // SELECT * from user
   }
 
-  
   async getOneById(id: number): Promise<User> {
       return await this.usersRepository.findOneOrFail(id) // SELECT * from user WHERE id = ?
   }

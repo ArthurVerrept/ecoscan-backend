@@ -1,4 +1,4 @@
-import { Controller, ClassSerializerInterceptor, UseInterceptors, Body, Req, Post } from '@nestjs/common'
+import { Controller, ClassSerializerInterceptor, UseInterceptors, Body, Post } from '@nestjs/common'
 import TokenVerificationDto from './dto/token-verification.dto'
 import { GoogleAuthenticationService } from './googleAuthentication.service'
 
