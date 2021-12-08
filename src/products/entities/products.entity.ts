@@ -21,6 +21,9 @@ class Product {
     productQuality: number
 
     @Column()
+    totalScore: number
+
+    @Column()
     img: string
 }
 
