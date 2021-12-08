@@ -9,22 +9,15 @@ class Product {
     productName: string
 
     @Column()
-    brandName: string
-
-    @Column()
-    productRating: number
-
-    @Column()
-    brandRating: number
-
-    @Column()
-    productQuality: number
-
-    @Column()
-    totalScore: number
-
-    @Column()
     img: string
+
+    // FOR ONE TO ONE RELATIONSHIPS
+    // Here we added @OneToOne to the profile and specify the 
+    // target relation type to be Profile. We also added 
+    // @JoinColumn which is required and must be set only on 
+    // one side of the relation. The side you set @JoinColumn 
+    // on, that side's table will contain a "relation id" and 
+    // foreign keys to target entity table.
 }
 
 export default Product

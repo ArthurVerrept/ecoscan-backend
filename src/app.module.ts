@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module'
 import { GoogleAuthenticationModule } from './google-authentication/googleAuthentication.module'
 import { ProductsModule } from './products/products.module'
 import { AuthModule } from './auth/auth.module'
+import { ReviewsModule } from './reviews/reviews.module'
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { AuthModule } from './auth/auth.module'
     DatabaseModule,
     GoogleAuthenticationModule,
     ProductsModule,
-    AuthModule
+    AuthModule,
+    ReviewsModule
   ],
   controllers: [AppController],
   providers: [AppService],
