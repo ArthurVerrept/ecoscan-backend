@@ -59,10 +59,6 @@ export class GoogleAuthenticationService {
     }
 
     const token = this.authService.getCookieWithJwtToken(user)
-    console.log(token)
-    return {
-      user,
-      token
-    }
+    return token
   }
 }

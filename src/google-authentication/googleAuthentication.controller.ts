@@ -10,7 +10,7 @@ export class GoogleAuthenticationController {
     @Post()
     async authenticate(@Body() tokenData: TokenVerificationDto) {
         // https://github.com/dwyl/hapi-auth-jwt2/issues/82#issuecomment-129873082
-        return await this.googleAuthenticationService.authenticate(tokenData.token)
-        
+         const token = await this.googleAuthenticationService.authenticate(tokenData.token)
+         return { token }
     }
 }
