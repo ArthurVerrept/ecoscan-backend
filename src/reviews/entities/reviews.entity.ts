@@ -1,3 +1,4 @@
+import Product from "src/products/entities/products.entity"
 import User from "src/users/entities/user.entity"
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
@@ -16,6 +17,9 @@ class Review {
     // on delete set the user_id to null since we want to keep their data
     @ManyToOne(() => User, user => user.reviews, { onDelete:'SET NULL' })
     user: User
+
+    @ManyToOne(() => Product, product => product.reviews, { onDelete:'CASCADE' })
+    product: Product
 }
 
 export default Review

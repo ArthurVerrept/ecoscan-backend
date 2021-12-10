@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import Brand from "src/brand/entities/brand.entity"
+import Review from "src/reviews/entities/reviews.entity"
+import ReviewAggregates from "src/reviews/entities/reviews.entity"
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class Product {
@@ -10,6 +13,18 @@ class Product {
 
     @Column()
     img: string
+
+    @Column()
+    barcode: number
+
+    @OneToMany(() => Review, review => review.user)
+    reviews: Review[]
+
+    @OneToOne(() => ReviewAggregates, ReviewAggregates => ReviewAggregates.product)
+    reviewAggregates: ReviewAggregates
+
+    @ManyToOne(() => Brand, brand => brand.product, { onDelete:'SET NULL' })
+    brand: Brand
 
     // FOR ONE TO ONE RELATIONSHIPS
     // Here we added @OneToOne to the profile and specify the 
