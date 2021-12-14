@@ -21,10 +21,10 @@ import { BrandModule } from './brand/brand.module'
     ProductsModule,
     ReviewsModule,
     ReviewAggregateModule,
-    BrandModule,
+    BrandModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 
 export class AppModule {}
