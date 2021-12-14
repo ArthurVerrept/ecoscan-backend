@@ -21,6 +21,7 @@ module.exports = {
     "@typescript-eslint/object-curly-spacing": ["error", "always"],
     // warn on the use of any
     '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/comma-dangle': ["error", "never"],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off'
