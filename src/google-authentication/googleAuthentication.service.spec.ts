@@ -6,7 +6,7 @@ describe('GoogleAuthenticationService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GoogleAuthenticationService],
+      providers: [GoogleAuthenticationService]
     }).compile()
 
     service = module.get<GoogleAuthenticationService>(GoogleAuthenticationService)

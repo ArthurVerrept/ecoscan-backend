@@ -6,7 +6,7 @@ describe('GoogleAuthenticationController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [GoogleAuthenticationController],
+      controllers: [GoogleAuthenticationController]
     }).compile()
 
     controller = module.get<GoogleAuthenticationController>(GoogleAuthenticationController)

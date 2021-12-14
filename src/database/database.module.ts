@@ -16,7 +16,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [
-            'dist/src/**/*.entity.js',
+            'dist/src/**/*.entity.js'
         ],
         namingStrategy: new SnakeNamingStrategy(),
         // synchronize should only be used for local development
@@ -25,7 +25,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
         // accidentally if you have this on
         synchronize: true
       })
-    }),
-  ],
+    })
+  ]
 })
 export class DatabaseModule {}

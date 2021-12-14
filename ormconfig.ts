@@ -13,7 +13,7 @@ const config = {
   database: process.env.POSTGRES_DB,
   // where to find the entities to make migrations
   entities: [
-    __dirname + '/src/**/*.entity.ts',
+    __dirname + '/src/**/*.entity.ts'
   ],
   // where to find migrations to run them
   migrations:[
@@ -25,7 +25,7 @@ const config = {
   },
   // tell migrations to use naming strategy for db
   // naming conventions
-  namingStrategy: new SnakeNamingStrategy(),
+  namingStrategy: new SnakeNamingStrategy()
 }
 
 export default config
