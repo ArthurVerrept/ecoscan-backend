@@ -24,7 +24,7 @@ import { BrandModule } from './brand/brand.module'
     BrandModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 
 export class AppModule {}
