@@ -39,7 +39,7 @@ $ postgres=# \du
 ```
 This should say return a table with your role name on the left.
 
-### 3. Connect to Server and Create Database
+### 3. Connect to Server
 - Open [pgAdmin](https://www.pgadmin.org/download/)
  (if this is tour first time it will prompt you to create a master password, make this whatever you want)
 - Create a new server by right clicking on servers
