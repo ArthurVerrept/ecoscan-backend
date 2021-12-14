@@ -9,7 +9,7 @@ import { ProductsModule } from './products/products.module'
 import { AuthModule } from './auth/auth.module'
 import { ReviewsModule } from './reviews/reviews.module'
 import { ReviewAggregateModule } from './review-aggregate/reviewAggregate.module'
-import { BrandModule } from './brand/brand.module';
+import { BrandModule } from './brand/brand.module'
 
 @Module({
   imports: [
@@ -17,8 +17,8 @@ import { BrandModule } from './brand/brand.module';
     ConfigModule.forRoot(),
     DatabaseModule,
     GoogleAuthenticationModule,
-    ProductsModule,
     AuthModule,
+    ProductsModule,
     ReviewsModule,
     ReviewAggregateModule,
     BrandModule

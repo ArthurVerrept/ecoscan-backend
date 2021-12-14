@@ -1,6 +1,6 @@
 import Brand from "src/brand/entities/brand.entity"
-import Review from "src/reviews/entities/reviews.entity"
-import ReviewAggregates from "src/reviews/entities/reviews.entity"
+import Review from "src/reviews/entities/review.entity"
+import ReviewAggregates from "src/reviews/entities/review.entity"
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
@@ -14,7 +14,7 @@ class Product {
     @Column()
     img: string
 
-    @Column()
+    @Column({ unique: true })
     barcode: number
 
     @OneToMany(() => Review, review => review.user)

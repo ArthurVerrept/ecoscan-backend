@@ -18,8 +18,8 @@ export class ProductsController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':id')
-    async getProductById(@Param('id') id: string): Promise<Product> {
+    async getProductByBarcode(@Param('id') barcode: string): Promise<Product> {
         // TODO: come back to Number(id) look at pipes documentation
-        return await this.productService.getOneById(Number(id))
+        return await this.productService.getOneByBarcode(Number(barcode))
     }
 }
