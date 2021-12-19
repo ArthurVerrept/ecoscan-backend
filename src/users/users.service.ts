@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-// import { GoogleAuthenticationService } from '../google-authentication/googleAuthentication.service'
+import { GoogleAuthenticationService } from 'src/google-authentication/googleAuthentication.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/createUser.dto'
 import { UpdateUserDto } from './dto/updateUser.dto'
@@ -8,7 +8,11 @@ import User from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
+  constructor(
+    @Inject(forwardRef(() => GoogleAuthenticationService)) 
+    private readonly googleAuthenticationService: GoogleAuthenticationService,
+    @InjectRepository(User) private usersRepository: Repository<User>
+    ){}
 
   getAll(): Promise<User[]> {
     return this.usersRepository.find() // SELECT * from user
@@ -33,9 +37,8 @@ export class UsersService {
   }
 
   async getGoogleUser(id: number) {
-    const user = await this.usersRepository.findOneOrFail({ id })
-
-    console.log(user)
+    const user = await this.getOneById(id)
+    return await this.googleAuthenticationService.getGoogleUser(user.googleAccessToken, user.googleRefreshToken)
   }
 
   async changeCurrentRefreshToken(userId: number, currentRefreshToken: string) {
@@ -86,5 +89,13 @@ export class UsersService {
         return user
       }
       throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND)
+  }
+
+  async logout(id: string) {
+      await this.usersRepository.update(id, {
+        currentRefreshToken: null
+      })
+
+      return { accessToken: '', refreshToken: '' }
   }
 }

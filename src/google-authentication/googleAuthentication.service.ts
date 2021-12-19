@@ -5,10 +5,15 @@ import { AuthService } from '../auth/auth.service'
 import User from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 
+// TODO: Handle google refresh token expiry 
+// TODO: Handle logout
+// TODO: Handle app token expiry
+
 @Injectable()
 export class GoogleAuthenticationService {
   oauthClient: Auth.OAuth2Client
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
     private readonly authService: AuthService
@@ -70,12 +75,6 @@ export class GoogleAuthenticationService {
       if (error.status !== 404) {
         throw new error
       }
-      
-        // if they don't exist get user data from google
-        // const userData = await this.getUserData(googleAccessToken)
-        // const name = userData.name
-        // console.log(userData)
-
 
       // add them into db
       const user = await this.usersService.createWithGoogle(email, googleAccessToken, googleRefreshToken)
@@ -115,12 +114,11 @@ export class GoogleAuthenticationService {
   }
 
 
-  async getGoogleUser(id: number) {
-    const user = await this.usersService.getOneById(id)
-
+  async getGoogleUser(googleAccessToken: string, googleRefreshToken: string) {
+    
     this.oauthClient.setCredentials({
-      refresh_token: user.googleRefreshToken,
-      access_token: user.googleAccessToken
+      refresh_token: googleRefreshToken,
+      access_token: googleAccessToken
     })
    
     const googleUser = await this.getUserData()

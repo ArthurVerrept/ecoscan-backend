@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { UsersModule } from 'src/users/users.module'
 import { AuthService } from './auth.service'
@@ -10,7 +10,7 @@ import { JwtRefreshTokenStrategy } from './jwt-refresh.strategy'
 
 @Module({
     imports: [
-        UsersModule, 
+        forwardRef(() => UsersModule), 
         PassportModule, 
         ConfigModule,
         JwtModule.registerAsync({
