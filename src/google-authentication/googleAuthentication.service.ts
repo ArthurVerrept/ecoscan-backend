@@ -6,7 +6,6 @@ import User from '../users/entities/user.entity'
 import { UsersService } from '../users/users.service'
 
 // TODO: Handle google refresh token expiry 
-// TODO: Handle logout
 // TODO: Handle app token expiry
 
 @Injectable()
@@ -67,10 +66,19 @@ export class GoogleAuthenticationService {
     // get email from google using access token
     const tokenInfo = await this.oauthClient.getTokenInfo(googleAccessToken)
     const email = tokenInfo.email
+    
     try {
       // if they exist get access and refresh for this app
       const user = await this.usersService.getByEmail(email)
-      return this.handleRegisteredUser(user)
+
+      // get JWT tokens
+      const { refreshToken, accessToken } = await this.handleRegisteredUser(user)
+      
+      // save app refresh token to db
+      await this.usersService.changeCurrentRefreshToken(user.id, refreshToken)
+
+
+      return { refreshToken, accessToken }
     } catch (error) {
       if (error.status !== 404) {
         throw new error
@@ -115,7 +123,7 @@ export class GoogleAuthenticationService {
 
 
   async getGoogleUser(googleAccessToken: string, googleRefreshToken: string) {
-    
+
     this.oauthClient.setCredentials({
       refresh_token: googleRefreshToken,
       access_token: googleAccessToken
