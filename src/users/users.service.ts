@@ -8,11 +8,7 @@ import User from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  constructor(
-    // @Inject(forwardRef(() => GoogleAuthenticationService))
-    // private readonly _googleAuthenticationService: GoogleAuthenticationService,
-    @InjectRepository(User) private usersRepository: Repository<User>
-    ){}
+  constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
 
   getAll(): Promise<User[]> {
     return this.usersRepository.find() // SELECT * from user
@@ -40,10 +36,6 @@ export class UsersService {
     const user = await this.usersRepository.findOneOrFail({ id })
 
     console.log(user)
-
-    // const googleUser = await this.googleAuthenticationService.getUserData(user.googleAccessToken)
-
-    // return googleUser
   }
 
   async changeCurrentRefreshToken(userId: number, currentRefreshToken: string) {

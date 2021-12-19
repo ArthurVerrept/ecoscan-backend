@@ -118,8 +118,6 @@ export class GoogleAuthenticationService {
   async getGoogleUser(id: number) {
     const user = await this.usersService.getOneById(id)
 
-    console.log(user)
-
     this.oauthClient.setCredentials({
       refresh_token: user.googleRefreshToken,
       access_token: user.googleAccessToken
