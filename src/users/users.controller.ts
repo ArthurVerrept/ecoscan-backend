@@ -18,17 +18,6 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async getGoogleUser(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    // TODO: come back to Number(id) look at pipes documentation
-    if (req.user.id !== id) {
-      throw new ForbiddenException()
-    }
-    
-    return await this.usersService.getGoogleUser(id)
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post()
   async createUser(@Body() body: CreateUserDto): Promise<User> {
     return await this.usersService.createUser(body)

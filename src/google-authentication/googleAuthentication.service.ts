@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Auth, google } from 'googleapis'
 import { AuthService } from '../auth/auth.service'
@@ -90,18 +90,20 @@ export class GoogleAuthenticationService {
     }
   }
 
-  async getUserData(token: string) {
+  async getUserData() {
     const userInfoClient = google.oauth2('v2').userinfo
-   
-    this.oauthClient.setCredentials({
-      access_token: token
-    })
    
     const userInfoResponse = await userInfoClient.get({
       auth: this.oauthClient
     })
-  
-    return userInfoResponse.data
+    
+    const returnObj = {
+      email: userInfoResponse.data.email,
+      name: userInfoResponse.data.name,
+      picture: userInfoResponse.data.picture
+    }
+
+    return returnObj
   }
 
   async handleRegisteredUser(user: User) {
@@ -110,5 +112,21 @@ export class GoogleAuthenticationService {
     }
 
     return this.authService.getCookiesWithJwtToken(user)
+  }
+
+
+  async getGoogleUser(id: number) {
+    const user = await this.usersService.getOneById(id)
+
+    console.log(user)
+
+    this.oauthClient.setCredentials({
+      refresh_token: user.googleRefreshToken,
+      access_token: user.googleAccessToken
+    })
+   
+    const googleUser = await this.getUserData()
+
+    return googleUser
   }
 }

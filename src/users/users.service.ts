@@ -1,5 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+// import { GoogleAuthenticationService } from '../google-authentication/googleAuthentication.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/createUser.dto'
 import { UpdateUserDto } from './dto/updateUser.dto'
@@ -7,7 +8,11 @@ import User from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
+  constructor(
+    // @Inject(forwardRef(() => GoogleAuthenticationService))
+    // private readonly _googleAuthenticationService: GoogleAuthenticationService,
+    @InjectRepository(User) private usersRepository: Repository<User>
+    ){}
 
   getAll(): Promise<User[]> {
     return this.usersRepository.find() // SELECT * from user
@@ -33,6 +38,7 @@ export class UsersService {
 
   async getGoogleUser(id: number) {
     const user = await this.usersRepository.findOneOrFail({ id })
+
     console.log(user)
 
     // const googleUser = await this.googleAuthenticationService.getUserData(user.googleAccessToken)
