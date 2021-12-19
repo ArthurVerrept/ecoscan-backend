@@ -6,14 +6,20 @@ class User {
     @PrimaryGeneratedColumn('increment')
     id: number
 
-    @Column()
-    name: string
-
     @Column({ unique: true })
     email: string
 
     @Column({ default: false })
     isCreatedWithGoogle: boolean
+
+    @Column({ nullable: true })
+    googleAccessToken?: string
+
+    @Column({ nullable: true })
+    googleRefreshToken?: string
+
+    @Column({ nullable: true })
+    currentRefreshToken?: string
 
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]

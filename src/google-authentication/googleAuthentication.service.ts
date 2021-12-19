@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Auth, google } from 'googleapis'
-import { AuthService } from 'src/auth/auth.service'
-import User from 'src/users/entities/user.entity'
-import { UsersService } from 'src/users/users.service'
+import { AuthService } from '../auth/auth.service'
+import User from '../users/entities/user.entity'
+import { UsersService } from '../users/users.service'
 
 @Injectable()
 export class GoogleAuthenticationService {
@@ -18,38 +18,90 @@ export class GoogleAuthenticationService {
  
     this.oauthClient = new google.auth.OAuth2(
       clientID,
-      clientSecret
+      clientSecret,
+      'http://127.0.0.1:5500/google-auth.html'
     )
   }
 
-  async authenticate(token: string) {
-    // Verify the integrity of the ID token
-    // verify a few conditions of the token with google
-    // conditions can be read here
-    // hhttps://developers.google.com/identity/sign-in/web/backend-auth#verify-the-integrity-of-the-id-token
-    const tokenInfo = await this.oauthClient.verifyIdToken({ idToken: token, audience: this.oauthClient._clientId })
-    const tokenPayload = await tokenInfo.getPayload()
+  async generateAuthUrl() {
+    const url = this.oauthClient.generateAuthUrl({
+      // 'online' (default) or 'offline' (gets refresh_token)
+      access_type: 'offline',
+    
+      // If you only need one scope you can pass it as a string
+      scope: 'profile email'
+    })
+    return url
+    // get user access and refresh tokens - DONE
 
-    // since above we used getPayload() that returns us basic user info
-    const email = tokenPayload.email
-    const name = tokenPayload.name
+    // save them with the user - DONE
 
-    // if we can get the user by email
+    // create function to get user info which take access and refresh tokens - DONE
+
+    // redirect if app access token expires
+
+    // only show sign in if user has signed out/ google refresh token has expired
+  }
+
+  async authenticate(authCode: string) {
     try {
+      // get access and refresh tokens from google
+      const { tokens } = await this.oauthClient.getToken(authCode)
+
+      return await this.getAppTokensForUser(tokens.access_token, tokens.refresh_token)
+    } catch {
+      throw new UnauthorizedException('Invalid Google grant, go through sign in flow again')
+    }
+  }
+
+  // this function takes the access and refresh tokens,
+  // tries to find the user by email, if he exists return
+  // our own access and refresh tokens, else add them to db
+  // then return our own access and refresh token
+  async getAppTokensForUser(googleAccessToken: string, googleRefreshToken: string) {
+    // get email from google using access token
+    const tokenInfo = await this.oauthClient.getTokenInfo(googleAccessToken)
+    const email = tokenInfo.email
+    try {
+      // if they exist get access and refresh for this app
       const user = await this.usersService.getByEmail(email)
-      
-      // sign them in and create token
       return this.handleRegisteredUser(user)
-    // otherwise create them a user
     } catch (error) {
       if (error.status !== 404) {
         throw new error
       }
-      const user = await this.usersService.createWithGoogle(name, email)
-   
-      // then sign them in and create token
-      return this.handleRegisteredUser(user)
+      
+        // if they don't exist get user data from google
+        // const userData = await this.getUserData(googleAccessToken)
+        // const name = userData.name
+        // console.log(userData)
+
+
+      // add them into db
+      const user = await this.usersService.createWithGoogle(email, googleAccessToken, googleRefreshToken)
+      
+      // get access and refresh for our app
+      const { refreshToken, accessToken } = await this.handleRegisteredUser(user)
+      
+      // save app refresh token to db
+      await this.usersService.changeCurrentRefreshToken(user.id, refreshToken)
+      
+      return { refreshToken, accessToken }
     }
+  }
+
+  async getUserData(token: string) {
+    const userInfoClient = google.oauth2('v2').userinfo
+   
+    this.oauthClient.setCredentials({
+      access_token: token
+    })
+   
+    const userInfoResponse = await userInfoClient.get({
+      auth: this.oauthClient
+    })
+  
+    return userInfoResponse.data
   }
 
   async handleRegisteredUser(user: User) {
@@ -57,7 +109,6 @@ export class GoogleAuthenticationService {
       throw new UnauthorizedException()
     }
 
-    const token = this.authService.getCookieWithJwtToken(user)
-    return token
+    return this.authService.getCookiesWithJwtToken(user)
   }
 }

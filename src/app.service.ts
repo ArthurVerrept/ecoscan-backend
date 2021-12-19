@@ -16,13 +16,13 @@ export class AppService {
   }
 
   async seed(): Promise<string> {
-    const user = await this.usersService.createWithGoogle('arthur verrept', 'arthur-verrept@hotmail.co.uk')
-    const product = await this.productsService.create({
-      productName: 'Walkers Prawn Cocktail',
-      img: 'https://www.britishcornershop.co.uk/img/large/SGN1375.jpg',
-      barcode: 5000328452579
-  })
-    await this.reviewsService.createReview(3, 0, user, product)
+  //   const user = await this.usersService.createWithGoogle('arthur verrept', 'arthur-verrept@hotmail.co.uk')
+  //   const product = await this.productsService.create({
+  //     productName: 'Walkers Prawn Cocktail',
+  //     img: 'https://www.britishcornershop.co.uk/img/large/SGN1375.jpg',
+  //     barcode: 5000328452579
+  // })
+  //   await this.reviewsService.createReview(3, 0, user, product)
     return 'complete'
   }
 }

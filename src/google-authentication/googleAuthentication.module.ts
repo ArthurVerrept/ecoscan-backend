@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { AuthModule } from 'src/auth/auth.module'
-import { UsersModule } from 'src/users/users.module'
+import { AuthModule } from '../auth/auth.module'
+import { UsersModule } from '../users/users.module'
 import { GoogleAuthenticationController } from './googleAuthentication.controller'
 import { GoogleAuthenticationService } from './googleAuthentication.service'
 
@@ -12,6 +12,7 @@ import { GoogleAuthenticationService } from './googleAuthentication.service'
     AuthModule
   ],
   controllers: [GoogleAuthenticationController],
-  providers: [GoogleAuthenticationService]
+  providers: [GoogleAuthenticationService],
+  exports: [GoogleAuthenticationService]
 })
 export class GoogleAuthenticationModule {}

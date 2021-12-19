@@ -7,8 +7,7 @@ import User from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>){
-  }
+  constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
 
   getAll(): Promise<User[]> {
     return this.usersRepository.find() // SELECT * from user
@@ -18,13 +17,34 @@ export class UsersService {
       return await this.usersRepository.findOneOrFail(id, { relations: ['reviews'] }) // SELECT * from user WHERE id = ?
   }
 
-  async createWithGoogle(name: string, email: string): Promise<User> {
-    const newUser = await this.usersRepository.create({ name, email, isCreatedWithGoogle: true })
+  async createWithGoogle(email: string, googleAccessToken: string, googleRefreshToken: string): Promise<User> {
+    const newUser = await this.usersRepository.create({ 
+      googleAccessToken,
+      googleRefreshToken,
+      email, 
+      isCreatedWithGoogle: true 
+    })
 
     // Saves a given entity in the database.
     // If entity does not exist in the database
     // then inserts, otherwise update
     return this.usersRepository.save(newUser) // INSERT
+  }
+
+  async getGoogleUser(id: number) {
+    const user = await this.usersRepository.findOneOrFail({ id })
+    console.log(user)
+
+    // const googleUser = await this.googleAuthenticationService.getUserData(user.googleAccessToken)
+
+    // return googleUser
+  }
+
+  async changeCurrentRefreshToken(userId: number, currentRefreshToken: string) {
+    await this.usersRepository.update(userId, {
+      currentRefreshToken
+    })
+    return
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -35,6 +55,16 @@ export class UsersService {
     // If entity does not exist in the database
     // then inserts, otherwise update
     return this.usersRepository.save(newUser) // INSERT
+  }
+
+  async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
+    const user = await this.getOneById(userId)
+ 
+    const isRefreshTokenMatching = (refreshToken === user.currentRefreshToken)
+ 
+    if (isRefreshTokenMatching) {
+      return user
+    }
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
