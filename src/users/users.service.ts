@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { GoogleAuthenticationService } from 'src/google-authentication/googleAuthentication.service'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/createUser.dto'
-import { UpdateUserDto } from './dto/updateUser.dto'
 import User from './entities/user.entity'
 
 @Injectable()
@@ -36,9 +35,16 @@ export class UsersService {
     return this.usersRepository.save(newUser) // INSERT
   }
 
-  async getGoogleUser(id: number) {
+  async getUser(id: number) {
     const user = await this.getOneById(id)
-    return await this.googleAuthenticationService.getGoogleUser(user.googleAccessToken, user.googleRefreshToken)
+
+    // if created with google get google user
+    // this is where you would add other
+    // options for getting users from different
+    // services
+    if (user.isCreatedWithGoogle) {
+      return await this.googleAuthenticationService.getGoogleUser(user.googleAccessToken, user.googleRefreshToken)
+    }
   }
 
   async changeCurrentRefreshToken(userId: number, currentRefreshToken: string) {
@@ -66,21 +72,6 @@ export class UsersService {
     if (isRefreshTokenMatching) {
       return user
     }
-  }
-
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    let user = await this.getOneById(id)
-
-    user = {
-      id: id,
-      ...user,
-      ...updateUserDto
-    }
-
-    // Saves a given entity in the database.
-    // If entity does not exist in the database
-    // then inserts, otherwise update
-    return this.usersRepository.save(user) // UPDATE
   }
 
   async getByEmail(email: string): Promise<User>  {
