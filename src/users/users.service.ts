@@ -43,7 +43,7 @@ export class UsersService {
     // options for getting users from different
     // services
     if (user.isCreatedWithGoogle) {
-      return await this.googleAuthenticationService.getGoogleUser(user.googleAccessToken, user.googleRefreshToken)
+      return await this.googleAuthenticationService.getUserData(user.googleAccessToken, user.googleRefreshToken)
     }
   }
 

@@ -97,9 +97,14 @@ export class GoogleAuthenticationService {
     }
   }
 
-  async getUserData() {
+  async getUserData(googleAccessToken: string, googleRefreshToken: string) {
     const userInfoClient = google.oauth2('v2').userinfo
    
+    this.oauthClient.setCredentials({
+      refresh_token: googleRefreshToken,
+      access_token: googleAccessToken
+    })
+
     const userInfoResponse = await userInfoClient.get({
       auth: this.oauthClient
     })
@@ -119,18 +124,5 @@ export class GoogleAuthenticationService {
     }
 
     return this.authService.getCookiesWithJwtToken(user)
-  }
-
-
-  async getGoogleUser(googleAccessToken: string, googleRefreshToken: string) {
-
-    this.oauthClient.setCredentials({
-      refresh_token: googleRefreshToken,
-      access_token: googleAccessToken
-    })
-   
-    const googleUser = await this.getUserData()
-
-    return googleUser
   }
 }
