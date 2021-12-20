@@ -12,7 +12,7 @@ export class AuthService {
     ){}
 
 
-    public async generateNewAccessToken(refreshToken: string, userId: number) {
+    public async generateNewAccessToken(userId: number) {
         const payload = { sub: userId } 
         const accessToken = this.jwtService.sign(payload, { 
             secret: this.configService.get('JWT_SECRET'),

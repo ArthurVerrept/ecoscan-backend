@@ -27,24 +27,15 @@ export class GoogleAuthenticationService {
     )
   }
 
-  async generateAuthUrl() {
+  generateAuthUrl() {
     const url = this.oauthClient.generateAuthUrl({
       // 'online' (default) or 'offline' (gets refresh_token)
       access_type: 'offline',
-    
-      // If you only need one scope you can pass it as a string
-      scope: 'profile email'
+
+      scope: ['profile', 'email']
     })
+    // console.log(url)
     return url
-    // get user access and refresh tokens - DONE
-
-    // save them with the user - DONE
-
-    // create function to get user info which take access and refresh tokens - DONE
-
-    // redirect if app access token expires
-
-    // only show sign in if user has signed out/ google refresh token has expired
   }
 
   async authenticate(authCode: string) {
@@ -64,45 +55,53 @@ export class GoogleAuthenticationService {
   // then return our own access and refresh token
   async getAppTokensForUser(googleAccessToken: string, googleRefreshToken: string) {
     // get email from google using access token
-    const tokenInfo = await this.oauthClient.getTokenInfo(googleAccessToken)
-    const email = tokenInfo.email
-    
-    try {
-      // if they exist get access and refresh for this app
-      const user = await this.usersService.getByEmail(email)
+      const tokenInfo = await this.oauthClient.getTokenInfo(googleAccessToken)
 
-      // get JWT tokens
-      const { refreshToken, accessToken } = await this.handleRegisteredUser(user)
-      
-      // save app refresh token to db
-      await this.usersService.changeCurrentRefreshToken(user.id, refreshToken)
+      const email = tokenInfo.email
 
+      try {
+        // if they exist get access and refresh for this app
+        const user = await this.usersService.getByEmail(email)
+        
+        // if the refresh token has been revoked set the new got from signing in
+        if (googleRefreshToken) {
+          this.usersService.changeGoogleRefreshToken(user.id, googleRefreshToken)
+        }
 
-      return { refreshToken, accessToken }
-    } catch (error) {
-      if (error.status !== 404) {
-        throw new error
+        // get JWT tokens
+        const { refreshToken, accessToken } = await this.handleRegisteredUser(user)
+        
+        // save app refresh token to db
+        await this.usersService.changeCurrentRefreshToken(user.id, refreshToken)
+  
+  
+        return { refreshToken, accessToken }
+  
+      } catch (error) {
+        
+        if (error.status !== 404) {
+          throw new error
+        }
+  
+        // add them into db
+        const user = await this.usersService.createWithGoogle(email, googleRefreshToken)
+        
+        // get access and refresh for our app
+        const { refreshToken, accessToken } = await this.handleRegisteredUser(user)
+        
+        // save app refresh token to db
+        await this.usersService.changeCurrentRefreshToken(user.id, refreshToken)
+        
+        return { refreshToken, accessToken }
       }
-
-      // add them into db
-      const user = await this.usersService.createWithGoogle(email, googleAccessToken, googleRefreshToken)
       
-      // get access and refresh for our app
-      const { refreshToken, accessToken } = await this.handleRegisteredUser(user)
-      
-      // save app refresh token to db
-      await this.usersService.changeCurrentRefreshToken(user.id, refreshToken)
-      
-      return { refreshToken, accessToken }
-    }
   }
 
-  async getUserData(googleAccessToken: string, googleRefreshToken: string) {
+  async getUserData(googleRefreshToken: string) {
     const userInfoClient = google.oauth2('v2').userinfo
    
     this.oauthClient.setCredentials({
-      refresh_token: googleRefreshToken,
-      access_token: googleAccessToken
+      refresh_token: googleRefreshToken
     })
 
     const userInfoResponse = await userInfoClient.get({

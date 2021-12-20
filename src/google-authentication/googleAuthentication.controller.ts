@@ -7,10 +7,9 @@ import { GoogleAuthenticationService } from './googleAuthentication.service'
 export class GoogleAuthenticationController {
     constructor(private readonly googleAuthenticationService: GoogleAuthenticationService) {}
 
-
     @Post('get-authorization-url')
     async generateAuthUrl() {
-         return await this.googleAuthenticationService.generateAuthUrl()
+         return this.googleAuthenticationService.generateAuthUrl()
     }
 
     @Post('login')

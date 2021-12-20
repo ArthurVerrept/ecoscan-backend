@@ -21,9 +21,8 @@ export class UsersService {
       return await this.usersRepository.findOneOrFail(id, { relations: ['reviews'] }) // SELECT * from user WHERE id = ?
   }
 
-  async createWithGoogle(email: string, googleAccessToken: string, googleRefreshToken: string): Promise<User> {
+  async createWithGoogle(email: string, googleRefreshToken: string): Promise<User> {
     const newUser = await this.usersRepository.create({ 
-      googleAccessToken,
       googleRefreshToken,
       email, 
       isCreatedWithGoogle: true 
@@ -43,13 +42,20 @@ export class UsersService {
     // options for getting users from different
     // services
     if (user.isCreatedWithGoogle) {
-      return await this.googleAuthenticationService.getUserData(user.googleAccessToken, user.googleRefreshToken)
+      return await this.googleAuthenticationService.getUserData(user.googleRefreshToken)
     }
   }
 
   async changeCurrentRefreshToken(userId: number, currentRefreshToken: string) {
     await this.usersRepository.update(userId, {
       currentRefreshToken
+    })
+    return
+  }
+
+  async changeGoogleRefreshToken(userId: number, googleRefreshToken: string) {
+    await this.usersRepository.update(userId, {
+      googleRefreshToken
     })
     return
   }
@@ -64,8 +70,8 @@ export class UsersService {
     return this.usersRepository.save(newUser) // INSERT
   }
 
-  async getUserIfRefreshTokenMatches(refreshToken: string, userId: number) {
-    const user = await this.getOneById(userId)
+  async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
+    const user = await this.getOneById(id) // findOrFail()
  
     const isRefreshTokenMatching = (refreshToken === user.currentRefreshToken)
  

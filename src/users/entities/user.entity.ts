@@ -13,9 +13,6 @@ class User {
     isCreatedWithGoogle: boolean
 
     @Column({ nullable: true })
-    googleAccessToken?: string
-
-    @Column({ nullable: true })
     googleRefreshToken?: string
 
     @Column({ nullable: true })
