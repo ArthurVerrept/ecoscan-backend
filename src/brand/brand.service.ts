@@ -8,9 +8,8 @@ export class BrandService {
     constructor(@InjectRepository(Brand) private brandRepository: Repository<Brand>){}
     
     async getBrandLike(name: string): Promise<Brand>{
-        const brand = this.brandRepository.findOne({
-            name: Like("%out #%")
-        })
+        const brand = await this.brandRepository.findOne({ name })
+
         return brand
     }
 }

@@ -12,10 +12,10 @@ class Brand {
     @Column()
     description: string
 
-    @Column()
+    @Column("decimal", { precision: 2, scale: 1 })
     sustainabilityScore: number
 
-    @Column()
+    @Column("decimal", { precision: 2, scale: 1 })
     quality_score: number
 
     @OneToMany(() => Product, product => product.brand)

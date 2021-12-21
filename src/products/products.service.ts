@@ -21,7 +21,6 @@ export class ProductsService {
         return this.productRepository.find() // SELECT * from product
     }
 
-    // : Promise<Product  | undefined>
     async getOneByBarcode(barcode: string) {
         try{
             return await this.productRepository.findOneOrFail({ barcode }) // SELECT * from product WHERE id = ?
@@ -32,21 +31,16 @@ export class ProductsService {
             // killed it off (not actually i just don't have time to research another thing) 
             const product$ = await this.httpService.get('http://localhost:8000/?barcode=' + barcode)
             const product: AxiosResponse<ScrapedProductDto | undefined> = await lastValueFrom(product$)
-            
+
             if (product.data) {
                 const newProduct = {
                     src: product.data.src,
                     productName: product.data.name,
-                    img: product.data.name,
+                    img: product.data.img,
                     barcode
                 }
-                return await this.create(newProduct, product.data.brand)
+                return await this.create(newProduct, product.data.brand.toUpperCase())
             }
-            
-
-            // call scraper
-            // save product in db if found
-            // return saved product
         }
     }
 
@@ -54,8 +48,13 @@ export class ProductsService {
         const newProduct = await this.productRepository.create(product) // SELECT * from product WHERE id = ?
 
         const brand = await this.brandService.getBrandLike(brandName)
-        console.log(brand)
-        // newProduct.brand = 
+
+        // if there is a brand assign it now
+        if (brand) {
+            newProduct.brand = brand
+        } 
+        // if not add the product, and ask user for brand.
+
         return await this.productRepository.save(newProduct)
     }
 }
