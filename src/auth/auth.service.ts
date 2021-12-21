@@ -18,7 +18,7 @@ export class AuthService {
             secret: this.configService.get('JWT_SECRET'),
             expiresIn: '180s'
         })
-
+        
         return { accessToken }
     }
 

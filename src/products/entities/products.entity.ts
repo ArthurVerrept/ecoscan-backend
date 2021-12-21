@@ -5,8 +5,11 @@ import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn 
 
 @Entity()
 class Product {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number
+
+    @Column()
+    src: string
 
     @Column({ unique: true })
     productName: string
@@ -14,8 +17,8 @@ class Product {
     @Column()
     img: string
 
-    @Column({ unique: true })
-    barcode: number
+    @Column({ unique: true, type: 'bigint' })
+    barcode: string
 
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]

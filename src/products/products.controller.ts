@@ -1,6 +1,7 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common'
+import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { AxiosResponse } from 'axios'
+import { lastValueFrom } from 'rxjs'
 import { Observable } from 'rxjs/internal/Observable'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
 import Product from './entities/products.entity'
@@ -18,10 +19,12 @@ export class ProductsController {
         return await this.productService.getAll()
     }
 
+
+    // Promise<Product | Observable<AxiosResponse<Product> | undefined>>
     @UseGuards(JwtAuthGuard)
     @Get(':barcode')
-    async getProductByBarcode(@Param('barcode') barcode: string): Promise<Product | Observable<AxiosResponse<Product> | undefined>> {
+    async getProductByBarcode(@Param('barcode') barcode: string) {
         // TODO: come back to Number(id) look at pipes documentation
-        return await this.productService.getOneByBarcode(Number(barcode))
+        return await this.productService.getOneByBarcode(barcode)
     }
 }
