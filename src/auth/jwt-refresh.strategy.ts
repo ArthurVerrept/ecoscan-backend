@@ -24,7 +24,7 @@ export class JwtRefreshTokenStrategy extends PassportStrategy(
  
   async validate(request: Request, payload: TokenPayload) {
     // get token and remove everything before and including the space
-    const refreshToken = request.headers.authorization.split(" ").pop()
+    const refreshToken = request.headers.authorization.split(' ').pop()
     
     // check if token from headers of user id in payload matches
     // the refresh token of user in database

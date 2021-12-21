@@ -42,7 +42,7 @@ export class GoogleAuthenticationService {
     try {
       // get access and refresh tokens from google
       const { tokens } = await this.oauthClient.getToken(authCode)
-
+      
       return await this.getAppTokensForUser(tokens.access_token, tokens.refresh_token)
     } catch {
       throw new UnauthorizedException('Invalid Google grant, go through sign in flow again')
@@ -94,7 +94,6 @@ export class GoogleAuthenticationService {
         
         return { refreshToken, accessToken }
       }
-      
   }
 
   async getUserData(googleRefreshToken: string) {
