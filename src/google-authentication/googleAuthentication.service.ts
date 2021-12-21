@@ -15,6 +15,7 @@ export class GoogleAuthenticationService {
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
+    @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService
   ) {
     const clientID = this.configService.get('GOOGLE_AUTH_CLIENT_ID')
@@ -98,15 +99,18 @@ export class GoogleAuthenticationService {
 
   async getUserData(googleRefreshToken: string) {
     const userInfoClient = google.oauth2('v2').userinfo
-   
+    
     this.oauthClient.setCredentials({
       refresh_token: googleRefreshToken
     })
-
+    
     const userInfoResponse = await userInfoClient.get({
       auth: this.oauthClient
     })
     
+    // make a specific response so in the future if there
+    // are more oath2 providers theres consistency in the
+    // getUserData response
     const returnObj = {
       email: userInfoResponse.data.email,
       name: userInfoResponse.data.name,

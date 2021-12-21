@@ -1,8 +1,10 @@
 import Product from "src/products/entities/products.entity"
+import { Exclude } from 'class-transformer'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class Brand {
+    @Exclude()
     @PrimaryGeneratedColumn()
     id: number
 

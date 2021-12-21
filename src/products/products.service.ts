@@ -17,13 +17,13 @@ export class ProductsService {
         @InjectRepository(Product) private productRepository: Repository<Product>
     ){}
 
-    getAll(): Promise<Product[]> {
-        return this.productRepository.find() // SELECT * from product
+    async getById(id: number): Promise<Product> {
+        return await this.productRepository.findOne({ id }) // SELECT * from product
     }
 
-    async getOneByBarcode(barcode: string) {
+    async getOneOrScrapeOne(barcode: string) {
         try{
-            return await this.productRepository.findOneOrFail({ barcode }) // SELECT * from product WHERE id = ?
+            return await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
         } catch {
             // for the record I hate reading this as much as the next guy
             // https://indepth.dev/posts/1287/rxjs-heads-up-topromise-is-being-deprecated
@@ -53,7 +53,7 @@ export class ProductsService {
         if (brand) {
             newProduct.brand = brand
         } 
-        // if not add the product, and ask user for brand.
+        // if not add the product, and ask user for brand later.
 
         return await this.productRepository.save(newProduct)
     }

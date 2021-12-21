@@ -14,11 +14,10 @@ export class ReviewsController {
         private readonly productService: ProductsService
     ){}
 
-    // @UseGuards(JwtAuthGuard)
-    // @HttpCode(200)
-    // @Post()
-    // async createReview(@Body() body: CreateReviewDto, @Request() req): Promise<Review> {
-    //     const product = await this.productService.getOneByBarcode(body.barcode)
-    //     return await this.reviewsService.createReview(body.sustainability, body.quality, req.user.id, product)
-    // }
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(200)
+    @Post()
+    async createReview(@Body() body: CreateReviewDto, @Request() req): Promise<Review> {
+        return await this.reviewsService.createReview(body.sustainability, body.quality, req.user.id, body.productId)
+    }
 }

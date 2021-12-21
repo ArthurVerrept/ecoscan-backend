@@ -1,8 +1,6 @@
-import { Controller, ForbiddenException, Get, Param, ParseIntPipe, Request, UseGuards } from '@nestjs/common'
+import { ClassSerializerInterceptor, Controller, Get, Request, UseGuards, UseInterceptors } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import JwtAuthGuard from '../auth/jwt-auth.guard'
-import { GetUserDto } from './dto/getGoogleUser.dto'
-// import { Request } from 'express'
 import { UsersService } from './users.service'
 
 @ApiTags('users')
@@ -10,10 +8,10 @@ import { UsersService } from './users.service'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  async getGoogleUser(@Request() req): Promise<GetUserDto> {
-    // TODO: come back to Number(id) look at pipes documentation
+  async getGoogleUser(@Request() req) {
     return await this.usersService.getUser(req.user.id)
   }
 }

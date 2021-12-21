@@ -42,8 +42,11 @@ export class UsersService {
     // options for getting users from different
     // services
     if (user.isCreatedWithGoogle) {
-      return await this.googleAuthenticationService.getUserData(user.googleRefreshToken)
+      const userData = await this.googleAuthenticationService.getUserData(user.googleRefreshToken)
+      
+      return userData
     }
+    
   }
 
   async changeCurrentRefreshToken(userId: number, currentRefreshToken: string) {

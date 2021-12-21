@@ -1,5 +1,6 @@
 export class CreateReviewDto {
-    barcode: number
+    barcode: string
     sustainability: number
     quality: number
+    productId: number
 }
