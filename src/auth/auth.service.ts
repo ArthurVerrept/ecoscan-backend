@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { forwardRef, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import User from 'src/users/entities/user.entity'
+import { UsersService } from 'src/users/users.service'
 
 
 @Injectable()
@@ -9,6 +10,9 @@ export class AuthService {
     constructor(
         private readonly jwtService: JwtService, 
         private readonly configService: ConfigService,
+        @Inject(forwardRef(() => UsersService))
+        private readonly usersService: UsersService,
+
     ){}
 
 
@@ -18,8 +22,10 @@ export class AuthService {
             secret: this.configService.get('JWT_SECRET'),
             expiresIn: '180s'
         })
-        
-        return { accessToken }
+
+        // returning email so ryan can add to keychain
+        const user = await this.usersService.getUser(userId)
+        return { accessToken, email: user.email }
     }
 
 

@@ -1,8 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { AxiosResponse } from 'axios'
-import { lastValueFrom } from 'rxjs'
-import { Observable } from 'rxjs/internal/Observable'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
 import Product from './entities/products.entity'
 import { ProductsService } from './products.service'

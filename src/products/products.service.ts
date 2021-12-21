@@ -5,7 +5,6 @@ import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import Product from './entities/products.entity'
 import { CreateProductDto } from './dto/CreateProduct.dto'
-import { Observable } from 'rxjs/internal/Observable'
 import { ScrapedProductDto } from './dto/scrapedProduct.dto'
 import { lastValueFrom } from 'rxjs'
 
