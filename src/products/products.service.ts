@@ -33,12 +33,14 @@ export class ProductsService {
             const product: AxiosResponse<ScrapedProductDto | undefined> = await lastValueFrom(product$)
 
             if (product.data) {
+                
                 const newProduct = {
                     src: product.data.src,
                     productName: product.data.name,
                     img: product.data.img,
                     barcode
                 }
+
                 return await this.create(newProduct, product.data.brand.toUpperCase())
             }
         }
