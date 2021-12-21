@@ -7,10 +7,10 @@ class Brand {
     id: number
 
     @Column()
-    name: number
+    name: string
 
     @Column()
-    description: number
+    description: string
 
     @Column()
     sustainabilityScore: number

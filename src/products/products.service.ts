@@ -7,11 +7,13 @@ import Product from './entities/products.entity'
 import { CreateProductDto } from './dto/CreateProduct.dto'
 import { ScrapedProductDto } from './dto/scrapedProduct.dto'
 import { lastValueFrom } from 'rxjs'
+import { BrandService } from 'src/brand/brand.service'
 
 @Injectable()
 export class ProductsService {
     constructor(
         private httpService: HttpService,
+        private brandService: BrandService,
         @InjectRepository(Product) private productRepository: Repository<Product>
     ){}
 
@@ -30,7 +32,7 @@ export class ProductsService {
             // killed it off (not actually i just don't have time to research another thing) 
             const product$ = await this.httpService.get('http://localhost:8000/?barcode=' + barcode)
             const product: AxiosResponse<ScrapedProductDto | undefined> = await lastValueFrom(product$)
-
+            
             if (product.data) {
                 const newProduct = {
                     src: product.data.src,
@@ -38,7 +40,7 @@ export class ProductsService {
                     img: product.data.name,
                     barcode
                 }
-                return await this.create(newProduct)
+                return await this.create(newProduct, product.data.brand)
             }
             
 
@@ -48,9 +50,12 @@ export class ProductsService {
         }
     }
 
-    async create(product: CreateProductDto): Promise<Product> {
-        const newPorduct = await this.productRepository.create(product) // SELECT * from product WHERE id = ?
+    async create(product: CreateProductDto, brandName: string): Promise<Product> {
+        const newProduct = await this.productRepository.create(product) // SELECT * from product WHERE id = ?
 
-        return await this.productRepository.save(newPorduct)
+        const brand = await this.brandService.getBrandLike(brandName)
+        console.log(brand)
+        // newProduct.brand = 
+        return await this.productRepository.save(newProduct)
     }
 }
