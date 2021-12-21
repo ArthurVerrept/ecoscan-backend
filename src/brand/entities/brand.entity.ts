@@ -5,7 +5,13 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 class Brand {
     @PrimaryGeneratedColumn()
     id: number
-    
+
+    @Column()
+    name: number
+
+    @Column()
+    description: number
+
     @Column()
     sustainabilityScore: number
 
