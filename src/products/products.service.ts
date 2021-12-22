@@ -23,6 +23,13 @@ export class ProductsService {
         return await this.productRepository.findOne({ id }) // SELECT * from product
     }
 
+    async incrementReviews(product: Product): Promise<Product> {
+        const reviewAmount = parseInt(product.reviewAmount)
+        product.reviewAmount = (reviewAmount + 1).toString()
+        const newProduct = await this.productRepository.save(product)
+        return newProduct
+    }
+
     async getOneByBarcode(barcode: string): Promise<Product> {
         return await this.productRepository.findOne({ barcode })
     }
@@ -63,6 +70,7 @@ export class ProductsService {
                     productName: product.data.name,
                     img: product.data.img,
                     scanAmount: '1',
+                    reviewAmount: '0',
                     barcode
                 }
                 return await this.create(newProduct, product.data.brand.toUpperCase(), userId)
@@ -73,22 +81,21 @@ export class ProductsService {
     }
 
     async create(product: CreateProductDto, brandName: string, userId: number): Promise<Product> {
-        const newProduct = await this.productRepository.create(product) // SELECT * from product WHERE id = ?
-
+        const newProduct = await this.productRepository.create(product)
+        
         const brand = await this.brandService.getBrandLike(brandName)
-
+        
         // if there is a brand assign it now
         if (brand) {
             newProduct.brand = brand
         } 
-
+        
         // add user
         const user = await this.usersService.getOneById(userId)
-        console.log(user)
-
+        
         newProduct.user = user
         // if not add the product, and ask user for brand later.
-
+        
         return await this.productRepository.save(newProduct)
     }
 }

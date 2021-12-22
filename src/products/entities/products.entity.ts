@@ -24,14 +24,16 @@ class Product {
     @Column({ type: 'bigint' })
     scanAmount: string
 
+    @Column({ type: 'bigint' })
+    reviewAmount: string
+
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]
 
     @OneToOne(() => ReviewAggregates, ReviewAggregates => ReviewAggregates.product)
     reviewAggregates: ReviewAggregates
 
-    @OneToOne(() => User, User => User.product)
-    @JoinColumn()
+    @ManyToOne(() => User, User => User.product, { onDelete:'SET NULL' })
     user: User
 
     @ManyToOne(() => Brand, brand => brand.product, { onDelete:'SET NULL' })

@@ -17,10 +17,12 @@ export class ReviewsService {
         
         const product = await this.productRepository.getOneByBarcode(barcode)
         
-        newReview.user = user
         newReview.product = product
 
-        await this.reviewRepository.save(newReview)
-        return
+        await this.productRepository.incrementReviews(product)
+
+        newReview.user = user
+        
+        return await this.reviewRepository.save(newReview)
     }
 }
