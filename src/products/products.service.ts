@@ -21,7 +21,7 @@ export class ProductsService {
         return await this.productRepository.findOne({ id }) // SELECT * from product
     }
 
-    async getOneOrScrapeOne(barcode: string) {
+    async getOneOrScrapeOne(barcode: string): Promise<Product | null> {
         try{
             return await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
         } catch {
@@ -40,8 +40,9 @@ export class ProductsService {
                     img: product.data.img,
                     barcode
                 }
-
                 return await this.create(newProduct, product.data.brand.toUpperCase())
+            } else {
+                return null
             }
         }
     }
