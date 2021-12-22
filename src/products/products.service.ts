@@ -21,10 +21,25 @@ export class ProductsService {
         return await this.productRepository.findOne({ id }) // SELECT * from product
     }
 
+    async getMostPopularItems(): Promise<Product[]> {
+        return await this.productRepository.find({ 
+            order: {
+                scanAmount: "DESC"
+            },
+            take: 10
+            // SELECT * FROM "product"
+            // ORDER BY "scanAMount" DESC 
+            // LIMIT 10
+        })
+    }
+
+    
+
     async getOneOrScrapeOne(barcode: string): Promise<Product | null> {
+        console.log('in')
         try{
             const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
-            
+
             const scanAmount = parseInt(product.scanAmount) + 1
             product.scanAmount = scanAmount.toString()
 
