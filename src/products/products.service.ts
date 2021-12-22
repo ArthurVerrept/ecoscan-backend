@@ -23,7 +23,12 @@ export class ProductsService {
 
     async getOneOrScrapeOne(barcode: string): Promise<Product | null> {
         try{
-            return await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
+            const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
+            
+            const scanAmount = parseInt(product.scanAmount) + 1
+            product.scanAmount = scanAmount.toString()
+
+            return await this.productRepository.save(product)
         } catch {
             // for the record I hate reading this as much as the next guy
             // https://indepth.dev/posts/1287/rxjs-heads-up-topromise-is-being-deprecated
@@ -38,6 +43,7 @@ export class ProductsService {
                     src: product.data.src,
                     productName: product.data.name,
                     img: product.data.img,
+                    scanAmount: '1',
                     barcode
                 }
                 return await this.create(newProduct, product.data.brand.toUpperCase())

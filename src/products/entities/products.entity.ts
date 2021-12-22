@@ -20,6 +20,9 @@ class Product {
     @Column({ unique: true, type: 'bigint' })
     barcode: string
 
+    @Column({ type: 'bigint' })
+    scanAmount: string
+
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]
 
