@@ -12,10 +12,10 @@ export class ReviewsService {
         private readonly productRepository: ProductsService
     ){}
     
-    async createReview(sustainability: number, quality: number, user: User, productId: number): Promise<Review> {
+    async createReview(sustainability: number, quality: number, user: User, barcode: string): Promise<Review> {
         const newReview = await this.reviewRepository.create({ sustainability, quality })
         
-        const product = await this.productRepository.getById(productId)
+        const product = await this.productRepository.getOneByBarcode(barcode)
         
         newReview.user = user
         newReview.product = product

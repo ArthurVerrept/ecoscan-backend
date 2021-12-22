@@ -18,6 +18,6 @@ export class ReviewsController {
     @HttpCode(200)
     @Post()
     async createReview(@Body() body: CreateReviewDto, @Request() req): Promise<Review> {
-        return await this.reviewsService.createReview(body.sustainability, body.quality, req.user.id, body.productId)
+        return await this.reviewsService.createReview(body.sustainability, body.quality, req.user.id, body.barcode)
     }
 }

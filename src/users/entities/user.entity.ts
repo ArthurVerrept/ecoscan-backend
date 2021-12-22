@@ -1,6 +1,7 @@
 import { Exclude } from "class-transformer"
+import Product from "src/products/entities/products.entity"
 import Review from "src/reviews/entities/review.entity"
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class User {
@@ -22,6 +23,9 @@ class User {
     @Exclude()
     @Column({ nullable: true })
     currentRefreshToken?: string
+
+    @OneToOne(() => Product, Product => Product.user)
+    product: Product
 
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]

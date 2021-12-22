@@ -1,7 +1,8 @@
 import Brand from "src/brand/entities/brand.entity"
 import Review from "src/reviews/entities/review.entity"
-import ReviewAggregates from "src/reviews/entities/review.entity"
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import ReviewAggregates from "src/reviewAggregate/entities/reviewAggregate.entity"
+import User from "src/users/entities/user.entity"
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class Product {
@@ -28,6 +29,10 @@ class Product {
 
     @OneToOne(() => ReviewAggregates, ReviewAggregates => ReviewAggregates.product)
     reviewAggregates: ReviewAggregates
+
+    @OneToOne(() => User, User => User.product)
+    @JoinColumn()
+    user: User
 
     @ManyToOne(() => Brand, brand => brand.product, { onDelete:'SET NULL' })
     brand: Brand

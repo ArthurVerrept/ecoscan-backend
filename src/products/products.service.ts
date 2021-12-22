@@ -8,17 +8,23 @@ import { CreateProductDto } from './dto/CreateProduct.dto'
 import { ScrapedProductDto } from './dto/scrapedProduct.dto'
 import { lastValueFrom } from 'rxjs'
 import { BrandService } from 'src/brand/brand.service'
+import { UsersService } from 'src/users/users.service'
 
 @Injectable()
 export class ProductsService {
     constructor(
         private httpService: HttpService,
         private brandService: BrandService,
+        private usersService: UsersService,
         @InjectRepository(Product) private productRepository: Repository<Product>
     ){}
 
     async getById(id: number): Promise<Product> {
         return await this.productRepository.findOne({ id }) // SELECT * from product
+    }
+
+    async getOneByBarcode(barcode: string): Promise<Product> {
+        return await this.productRepository.findOne({ barcode })
     }
 
     async getMostPopularItems(): Promise<Product[]> {
@@ -35,8 +41,7 @@ export class ProductsService {
 
     
 
-    async getOneOrScrapeOne(barcode: string): Promise<Product | null> {
-        console.log('in')
+    async getOneOrScrapeOne(barcode: string, userId): Promise<Product | null> {
         try{
             const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
 
@@ -53,7 +58,6 @@ export class ProductsService {
             const product: AxiosResponse<ScrapedProductDto | undefined> = await lastValueFrom(product$)
 
             if (product.data) {
-                
                 const newProduct = {
                     src: product.data.src,
                     productName: product.data.name,
@@ -61,14 +65,14 @@ export class ProductsService {
                     scanAmount: '1',
                     barcode
                 }
-                return await this.create(newProduct, product.data.brand.toUpperCase())
+                return await this.create(newProduct, product.data.brand.toUpperCase(), userId)
             } else {
                 return null
             }
         }
     }
 
-    async create(product: CreateProductDto, brandName: string): Promise<Product> {
+    async create(product: CreateProductDto, brandName: string, userId: number): Promise<Product> {
         const newProduct = await this.productRepository.create(product) // SELECT * from product WHERE id = ?
 
         const brand = await this.brandService.getBrandLike(brandName)
@@ -77,6 +81,12 @@ export class ProductsService {
         if (brand) {
             newProduct.brand = brand
         } 
+
+        // add user
+        const user = await this.usersService.getOneById(userId)
+        console.log(user)
+
+        newProduct.user = user
         // if not add the product, and ask user for brand later.
 
         return await this.productRepository.save(newProduct)
