@@ -18,7 +18,7 @@ class Brand {
     sustainabilityScore: number
 
     @Column("decimal", { precision: 2, scale: 1 })
-    quality_score: number
+    qualityScore: number
 
     @OneToMany(() => Product, product => product.brand)
     product: Product[]

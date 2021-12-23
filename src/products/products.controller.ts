@@ -1,4 +1,4 @@
-import { ClassSerializerInterceptor, Controller, Get, Param, ParseIntPipe, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common'
+import { ClassSerializerInterceptor, Controller, Get, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
 import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
@@ -38,6 +38,4 @@ export class ProductsController {
     async getMostSustainable(): Promise<ReviewAggregate[]> {
         return await this.productService.getMostSustainable()
     }
-    
-    
 }

@@ -11,6 +11,7 @@ import { BrandService } from 'src/brand/brand.service'
 import { UsersService } from 'src/users/users.service'
 import { ReviewAggregateService } from 'src/reviewAggregate/reviewAggregate.service'
 import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
+import Review from 'src/reviews/entities/review.entity'
 
 @Injectable()
 export class ProductsService {
@@ -72,10 +73,10 @@ export class ProductsService {
             // there used to be a clean .toPromise() but that was too nice and easy so they
             // killed it off (not actually i just don't have time to research another thing) 
             const product$ = await this.httpService.get('http://localhost:8000/?barcode=' + barcode)
-            const product: AxiosResponse<ScrapedProductDto | undefined> = await lastValueFrom(product$)
+            const product: AxiosResponse<ScrapedProductDto | Record<string, never>> = await lastValueFrom(product$)
 
             if (product.data) {
-                const newProduct = {
+            const newProduct = {
                     src: product.data.src,
                     productName: product.data.name,
                     img: product.data.img,
@@ -100,6 +101,10 @@ export class ProductsService {
         // if there is a brand assign it now
         if (brand) {
             newProduct.brand = brand
+        } else {
+            // create and assign new brand
+            newProduct.brand = await this.brandService.create(brandName, [newProduct])
+
         } 
         
         // add user
@@ -107,7 +112,8 @@ export class ProductsService {
         
         newProduct.user = user
 
+        await this.productRepository.save(newProduct)
         // if not add the product, and ask user for brand later.
-        return await this.productRepository.save(newProduct)
+        return await this.productRepository.findOne(newProduct.id, { relations:['brand', 'reviewAggregate'] })
     }
 }
