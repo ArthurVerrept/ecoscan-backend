@@ -15,7 +15,6 @@ export class ProductsController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async getProductByBarcode(@Req() req, @Query('barcode') barcode: string): Promise<Product | null> {
-        // TODO: come back to Number(id) look at pipes documentation
         return await this.productService.getOneOrScrapeOne(barcode, req.user.id)
     }
 
@@ -23,7 +22,6 @@ export class ProductsController {
     @UseGuards(JwtAuthGuard)
     @Get('most-popular')
     async getMostPopular(): Promise<Product[]>   {
-        // TODO: come back to Number(id) look at pipes documentation
         return await this.productService.getMostPopularItems()
     }
 
@@ -31,7 +29,6 @@ export class ProductsController {
     @UseGuards(JwtAuthGuard)
     @Get('best-quality')
     async getHighestQuality(): Promise<ReviewAggregate[]> {
-        // TODO: come back to Number(id) look at pipes documentation
         return await this.productService.getBestQualtyItems()
     }
 
@@ -39,7 +36,6 @@ export class ProductsController {
     @UseGuards(JwtAuthGuard)
     @Get('most-sustainable')
     async getMostSustainable(): Promise<ReviewAggregate[]> {
-        // TODO: come back to Number(id) look at pipes documentation
         return await this.productService.getMostSustainable()
     }
     

@@ -42,13 +42,13 @@ export class ProductsService {
             order: {
                 scanAmount: "DESC"
             },
-            take: 10
+            take: 10,
+            relations: ['reviewAggregate']
             // SELECT * FROM "product"
             // ORDER BY "scanAMount" DESC 
             // LIMIT 10
         })
     }
-
 
     async getBestQualtyItems(): Promise<ReviewAggregate[]> {
         return await this.reviewAggregateService.getBestQuality()
@@ -60,7 +60,7 @@ export class ProductsService {
 
     async getOneOrScrapeOne(barcode: string, userId): Promise<Product | null> {
         try{
-            const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand', 'reviewAggregate'] }) // SELECT * from product WHERE id = ?
+            const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand', 'reviewAggregate'] })
 
             const scanAmount = parseInt(product.scanAmount) + 1
             product.scanAmount = scanAmount.toString()
@@ -83,6 +83,8 @@ export class ProductsService {
                     reviewAmount: '0',
                     barcode
                 }
+
+                // save all brand names in uppercase for best change of finding by name
                 return await this.create(newProduct, product.data.brand.toUpperCase(), userId)
             } else {
                 return null
