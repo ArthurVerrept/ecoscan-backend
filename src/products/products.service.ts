@@ -60,7 +60,7 @@ export class ProductsService {
 
     async getOneOrScrapeOne(barcode: string, userId): Promise<Product | null> {
         try{
-            const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand'] }) // SELECT * from product WHERE id = ?
+            const product = await this.productRepository.findOneOrFail({ where: { barcode }, relations: ['brand', 'reviewAggregate'] }) // SELECT * from product WHERE id = ?
 
             const scanAmount = parseInt(product.scanAmount) + 1
             product.scanAmount = scanAmount.toString()

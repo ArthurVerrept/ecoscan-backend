@@ -14,7 +14,7 @@ class ReviewAggregate {
     @Column("decimal", { precision: 2, scale: 1 })
     qualityScore: number
 
-    @OneToOne(() => Product, product => product.reviewAggregates)
+    @OneToOne(() => Product, product => product.reviewAggregate)
     @JoinColumn()
     product: Product
 

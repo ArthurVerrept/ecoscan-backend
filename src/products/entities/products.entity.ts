@@ -1,11 +1,13 @@
 import Brand from "src/brand/entities/brand.entity"
 import Review from "src/reviews/entities/review.entity"
-import ReviewAggregates from "src/reviewAggregate/entities/reviewAggregate.entity"
 import User from "src/users/entities/user.entity"
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import ReviewAggregate from "src/reviewAggregate/entities/reviewAggregate.entity"
+import { Exclude } from "class-transformer"
 
 @Entity()
 class Product {
+    @Exclude()
     @PrimaryGeneratedColumn('increment')
     id: number
 
@@ -30,8 +32,8 @@ class Product {
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]
 
-    @OneToOne(() => ReviewAggregates, ReviewAggregates => ReviewAggregates.product)
-    reviewAggregates: ReviewAggregates
+    @OneToOne(() => ReviewAggregate, ReviewAggregate => ReviewAggregate.product)
+    reviewAggregate: ReviewAggregate
 
     @ManyToOne(() => User, User => User.product, { onDelete:'SET NULL' })
     user: User
