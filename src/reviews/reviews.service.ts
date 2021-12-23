@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import Product from 'src/products/entities/products.entity'
 import { ProductsService } from 'src/products/products.service'
@@ -40,6 +40,10 @@ export class ReviewsService {
     
     // TODO: if you have time make this a sql transaction
     async createReview(sustainability: number, quality: number, user: User, barcode: string): Promise<Review> {
+        console.log(typeof sustainability)
+        if(sustainability > 5 || quality > 5 || sustainability < 0 || quality > 0) {
+            throw new HttpException('sustainability and quality should be between 0 and 5', 400)
+        }
         let newReview = await this.reviewRepository.create({ sustainability, quality })
         
         const product = await this.productRepository.getOneByBarcode(barcode)
