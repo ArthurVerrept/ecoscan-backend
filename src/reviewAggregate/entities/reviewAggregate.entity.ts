@@ -2,15 +2,15 @@ import Product from "src/products/entities/products.entity"
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
-class ReviewAggregates {
+class ReviewAggregate {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column("decimal", { precision: 2, scale: 1 })
     sustainabilityScore: number
 
-    @Column()
-    quality_score: number
+    @Column("decimal", { precision: 2, scale: 1 })
+    qualityScore: number
 
     @OneToOne(() => Product, product => product.reviewAggregates)
     @JoinColumn()
@@ -25,4 +25,4 @@ class ReviewAggregates {
     // foreign keys to target entity table.
 }
 
-export default ReviewAggregates
+export default ReviewAggregate

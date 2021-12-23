@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request, HttpCode } from '@nestjs/common'
+import { Body, Controller, Post, UseGuards, Request, HttpCode, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
 import { ProductsService } from 'src/products/products.service'
@@ -14,6 +14,7 @@ export class ReviewsController {
         private readonly productService: ProductsService
     ){}
 
+    @UseInterceptors(ClassSerializerInterceptor)
     @UseGuards(JwtAuthGuard)
     @HttpCode(200)
     @Post()

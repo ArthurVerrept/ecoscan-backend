@@ -94,8 +94,8 @@ export class ProductsService {
         const user = await this.usersService.getOneById(userId)
         
         newProduct.user = user
+
         // if not add the product, and ask user for brand later.
-        
         return await this.productRepository.save(newProduct)
     }
 }

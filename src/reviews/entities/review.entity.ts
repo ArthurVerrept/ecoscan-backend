@@ -1,9 +1,11 @@
+import { Exclude } from "class-transformer"
 import Product from "src/products/entities/products.entity"
 import User from "src/users/entities/user.entity"
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class Review {
+    @Exclude()
     @PrimaryGeneratedColumn('increment')
     id: number
 
