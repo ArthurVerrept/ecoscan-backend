@@ -10,6 +10,32 @@ export class ReviewAggregateService {
         @InjectRepository(ReviewAggregate) private reviewAggregateRepository: Repository<ReviewAggregate>,
     ) {}
 
+    async getBestQuality() {
+        return await this.reviewAggregateRepository.find({ 
+            order: {
+                qualityScore: "DESC"
+            },
+            take: 10,
+            relations: ['product']
+            // SELECT * FROM "review_aggregate"
+            // ORDER BY "qualityScore" DESC 
+            // LIMIT 10
+        })
+    }
+
+    async getMostSustainable() {
+        return await this.reviewAggregateRepository.find({ 
+            order: {
+                sustainabilityScore: "DESC"
+            },
+            take: 10,
+            relations: ['product']
+            // SELECT * FROM "review_aggregate"
+            // ORDER BY "qualityScore" DESC 
+            // LIMIT 10
+        })
+    }
+
     async createOrUpdate(product: Product, sustainability: number, quality: number): Promise<ReviewAggregate> {
         let revAgg
         try {

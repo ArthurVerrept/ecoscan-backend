@@ -1,6 +1,7 @@
 import { ClassSerializerInterceptor, Controller, Get, Param, ParseIntPipe, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import JwtAuthGuard from 'src/auth/jwt-auth.guard'
+import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
 import Product from './entities/products.entity'
 import { ProductsService } from './products.service'
 
@@ -21,9 +22,25 @@ export class ProductsController {
     @UseInterceptors(ClassSerializerInterceptor)
     @UseGuards(JwtAuthGuard)
     @Get('most-popular')
-    async getMostPopular(): Promise<Product[]> {
+    async getMostPopular(): Promise<Product[]>   {
         // TODO: come back to Number(id) look at pipes documentation
         return await this.productService.getMostPopularItems()
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @UseGuards(JwtAuthGuard)
+    @Get('best-quality')
+    async getHighestQuality(): Promise<ReviewAggregate[]> {
+        // TODO: come back to Number(id) look at pipes documentation
+        return await this.productService.getBestQualtyItems()
+    }
+
+    @UseInterceptors(ClassSerializerInterceptor)
+    @UseGuards(JwtAuthGuard)
+    @Get('most-sustainable')
+    async getMostSustainable(): Promise<ReviewAggregate[]> {
+        // TODO: come back to Number(id) look at pipes documentation
+        return await this.productService.getMostSustainable()
     }
     
     

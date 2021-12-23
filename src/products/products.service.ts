@@ -9,6 +9,8 @@ import { ScrapedProductDto } from './dto/scrapedProduct.dto'
 import { lastValueFrom } from 'rxjs'
 import { BrandService } from 'src/brand/brand.service'
 import { UsersService } from 'src/users/users.service'
+import { ReviewAggregateService } from 'src/reviewAggregate/reviewAggregate.service'
+import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +18,7 @@ export class ProductsService {
         private httpService: HttpService,
         private brandService: BrandService,
         private usersService: UsersService,
+        private reviewAggregateService: ReviewAggregateService,
         @InjectRepository(Product) private productRepository: Repository<Product>
     ){}
 
@@ -46,7 +49,14 @@ export class ProductsService {
         })
     }
 
-    
+
+    async getBestQualtyItems(): Promise<ReviewAggregate[]> {
+        return await this.reviewAggregateService.getBestQuality()
+    }
+
+    async getMostSustainable(): Promise<ReviewAggregate[]> {
+        return await this.reviewAggregateService.getMostSustainable()
+    }
 
     async getOneOrScrapeOne(barcode: string, userId): Promise<Product | null> {
         try{

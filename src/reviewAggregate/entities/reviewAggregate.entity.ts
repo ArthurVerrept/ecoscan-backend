@@ -1,8 +1,10 @@
+import { Exclude } from "class-transformer"
 import Product from "src/products/entities/products.entity"
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 class ReviewAggregate {
+    @Exclude()
     @PrimaryGeneratedColumn()
     id: number
 
