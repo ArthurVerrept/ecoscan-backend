@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common'
+import { forwardRef, HttpException, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import User from 'src/users/entities/user.entity'
@@ -24,8 +24,12 @@ export class AuthService {
         })
 
         // returning email so ryan can add to keychain
-        const user = await this.usersService.getUser(userId)
-        return { accessToken, email: user.email }
+        try {
+            const user = await this.usersService.getUser(userId)
+            return { accessToken, email: user.email }
+        } catch {
+            throw new HttpException({ error_description: 'Google refresh token revoked, sign in again', error: 'invalid_grant' }, 400)
+        }
     }
 
 

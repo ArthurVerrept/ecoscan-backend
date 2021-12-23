@@ -35,7 +35,7 @@ export class GoogleAuthenticationService {
 
       scope: ['profile', 'email']
     })
-    
+
     return url
   }
 
