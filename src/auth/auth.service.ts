@@ -23,11 +23,14 @@ export class AuthService {
             expiresIn: '180s'
         })
 
-        // returning email so ryan can add to keychain
         try {
+            // returning email so ryan can add to keychain
             const user = await this.usersService.getUser(userId)
             return { accessToken, email: user.email }
         } catch {
+            // if token has been revoked through google it means that user
+            // it will fail into here where we return a specific 400 to tell
+            // the client to redirect
             throw new HttpException({ error_description: 'Google refresh token revoked, sign in again', error: 'invalid_grant' }, 400)
         }
     }
