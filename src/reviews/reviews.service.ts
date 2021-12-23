@@ -4,7 +4,7 @@ import Product from 'src/products/entities/products.entity'
 import { ProductsService } from 'src/products/products.service'
 import { ReviewAggregateService } from 'src/reviewAggregate/reviewAggregate.service'
 import User from 'src/users/entities/user.entity'
-import { getRepository, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import Review from './entities/review.entity'
 
 @Injectable()
@@ -41,8 +41,8 @@ export class ReviewsService {
     // TODO: if you have time make this a sql transaction
     async createReview(sustainability: number, quality: number, user: User, barcode: string): Promise<Review> {
         console.log(typeof sustainability)
-        if(sustainability > 5 || quality > 5 || sustainability < 0 || quality > 0) {
-            throw new HttpException('sustainability and quality should be between 0 and 5', 400)
+        if(sustainability > 5 || quality > 5 || sustainability < 0 || quality < 0) {
+            throw new HttpException('sustainability and quality values should be between 0 and 5', 400)
         }
         let newReview = await this.reviewRepository.create({ sustainability, quality })
         
