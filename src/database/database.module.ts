@@ -8,7 +8,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => (process.env.DATABASE_URL, {
         type: 'postgres',
         host: configService.get('POSTGRES_HOST'),
         port: configService.get('POSTGRES_PORT'),
