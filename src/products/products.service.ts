@@ -11,11 +11,13 @@ import { BrandService } from 'src/brand/brand.service'
 import { UsersService } from 'src/users/users.service'
 import { ReviewAggregateService } from 'src/reviewAggregate/reviewAggregate.service'
 import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class ProductsService {
     constructor(
         private httpService: HttpService,
+        private readonly configService: ConfigService,
         private brandService: BrandService,
         private usersService: UsersService,
         private reviewAggregateService: ReviewAggregateService,
@@ -71,7 +73,7 @@ export class ProductsService {
             // https://indepth.dev/posts/1287/rxjs-heads-up-topromise-is-being-deprecated
             // there used to be a clean .toPromise() but that was too nice and easy so they
             // killed it off (not actually i just don't have time to research another thing) 
-            const product$ = await this.httpService.get('http://localhost:8000/?barcode=' + barcode)
+            const product$ = await this.httpService.get(this.configService.get('SCRAPER_URL') || 'http://localhost:8000/' + '?barcode=' + barcode)
             const product: AxiosResponse<ScrapedProductDto | Record<string, never>> = await lastValueFrom(product$)
 
             if (product.data) {
