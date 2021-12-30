@@ -73,9 +73,11 @@ export class ProductsService {
             // https://indepth.dev/posts/1287/rxjs-heads-up-topromise-is-being-deprecated
             // there used to be a clean .toPromise() but that was too nice and easy so they
             // killed it off (not actually i just don't have time to research another thing) 
-            const product$ = await this.httpService.get(this.configService.get('SCRAPER_URL') || 'http://localhost:8000/' + '?barcode=' + barcode)
+            const URL = this.configService.get('SCRAPER_URL') || 'http://localhost:8000/'
+            const product$ = await this.httpService.get(URL + '?barcode=' + barcode)
             const product: AxiosResponse<ScrapedProductDto | Record<string, never>> = await lastValueFrom(product$)
 
+            console.log("DATA:::  ", product.data)
             if (product.data) {
             const newProduct = {
                     src: product.data.src,
