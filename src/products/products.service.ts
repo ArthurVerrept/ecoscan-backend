@@ -11,7 +11,6 @@ import { BrandService } from 'src/brand/brand.service'
 import { UsersService } from 'src/users/users.service'
 import { ReviewAggregateService } from 'src/reviewAggregate/reviewAggregate.service'
 import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
-import Review from 'src/reviews/entities/review.entity'
 
 @Injectable()
 export class ProductsService {

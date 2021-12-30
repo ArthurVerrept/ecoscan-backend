@@ -10,8 +10,7 @@ export class BrandService {
     
     async getBrandLike(name: string): Promise<Brand>{
         const brand = await this.brandRepository.findOne({ name })
-        console.log(brand)
-        console.log(name)
+
         return brand
     }
 

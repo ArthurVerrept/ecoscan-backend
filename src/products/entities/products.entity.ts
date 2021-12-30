@@ -32,7 +32,7 @@ class Product {
     @OneToMany(() => Review, review => review.user)
     reviews: Review[]
 
-    @OneToOne(() => ReviewAggregate, ReviewAggregate => ReviewAggregate.product)
+    @OneToOne(() => ReviewAggregate, reviewAggregate => reviewAggregate.product)
     reviewAggregate: ReviewAggregate
 
     @ManyToOne(() => User, User => User.product, { onDelete:'SET NULL' })
