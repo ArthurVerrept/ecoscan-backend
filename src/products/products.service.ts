@@ -44,7 +44,7 @@ export class ProductsService {
             order: {
                 scanAmount: "DESC"
             },
-            take: 10,
+            take: 5,
             relations: ['reviewAggregate']
             // SELECT * FROM "product"
             // ORDER BY "scanAMount" DESC 
