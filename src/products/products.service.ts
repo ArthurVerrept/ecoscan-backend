@@ -48,7 +48,7 @@ export class ProductsService {
             relations: ['reviewAggregate']
             // SELECT * FROM "product"
             // ORDER BY "scanAMount" DESC 
-            // LIMIT 10
+            // LIMIT 5
         })
     }
 

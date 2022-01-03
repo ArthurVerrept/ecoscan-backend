@@ -15,11 +15,11 @@ export class ReviewAggregateService {
             order: {
                 qualityScore: "DESC"
             },
-            take: 10,
+            take: 5,
             relations: ['product']
             // SELECT * FROM "review_aggregate"
             // ORDER BY "qualityScore" DESC 
-            // LIMIT 10
+            // LIMIT 5
         })
     }
 
@@ -28,11 +28,11 @@ export class ReviewAggregateService {
             order: {
                 sustainabilityScore: "DESC"
             },
-            take: 10,
+            take: 5,
             relations: ['product']
             // SELECT * FROM "review_aggregate"
             // ORDER BY "qualityScore" DESC 
-            // LIMIT 10
+            // LIMIT 5
         })
     }
 
