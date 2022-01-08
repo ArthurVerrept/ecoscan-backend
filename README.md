@@ -19,7 +19,7 @@ Check you don't already have postgres installed:
 ```bash
 $ postgres -V
 ```
-
+(If you have postgres installed I assume you know how to link it using the env file)<br>
 If you <u>do not</u> have postgres, use homebrew to download it:
 ```bash
 $ brew install postgresql
