@@ -46,9 +46,14 @@ export class ReviewsService {
         if(sustainability % 1 !== 0 || quality % 1 !== 0) {
             throw new HttpException('sustainability and quality values should be a whole number', 400)
         }
+
+        const product = await this.productRepository.getOneByBarcode(barcode)
+
+        if (!product) {
+            throw new HttpException('no product matching barcode', 400)
+        }
         let newReview = await this.reviewRepository.create({ sustainability, quality })
         
-        const product = await this.productRepository.getOneByBarcode(barcode)
         
         newReview.product = product
 
