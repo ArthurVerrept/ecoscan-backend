@@ -52,8 +52,8 @@ export class ReviewsService {
         if (!product) {
             throw new HttpException('no product matching barcode', 400)
         }
-        let newReview = await this.reviewRepository.create({ sustainability, quality })
         
+        let newReview = await this.reviewRepository.create({ sustainability, quality })
         
         newReview.product = product
 
