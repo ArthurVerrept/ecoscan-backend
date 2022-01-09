@@ -45,7 +45,8 @@ export class GoogleAuthenticationService {
       const { tokens } = await this.oauthClient.getToken(authCode)
       
       return await this.getAppTokensForUser(tokens.access_token, tokens.refresh_token)
-    } catch {
+    } catch (e) {
+      console.log(e)
       throw new UnauthorizedException('Invalid Google grant, go through sign in flow again')
     }
   }
