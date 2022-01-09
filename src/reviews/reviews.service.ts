@@ -31,10 +31,7 @@ export class ReviewsService {
             
         const sustainabilityAverage = Math.round(sustainability.avg * 10) / 10
         const qualityAverage = Math.round(quality.avg * 10) / 10
-        // await getRepository(Review)
-        // .createQueryBuilder("review")
-        // .select("SUM(review.sustainability)", "sum")
-        // .getRawOne()
+
         return { sustainability: sustainabilityAverage, quality: qualityAverage }
     }
     
@@ -52,7 +49,7 @@ export class ReviewsService {
         if (!product) {
             throw new HttpException('no product matching barcode', 400)
         }
-        
+
         let newReview = await this.reviewRepository.create({ sustainability, quality })
         
         newReview.product = product

@@ -77,7 +77,6 @@ export class ProductsService {
             const product$ = await this.httpService.get(URL + '?barcode=' + barcode)
             const product: AxiosResponse<ScrapedProductDto | Record<string, never>> = await lastValueFrom(product$)
 
-            console.log("DATA:::  ", product.data)
             if (product.data) {
             const newProduct = {
                     src: product.data.src,
