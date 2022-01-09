@@ -4,7 +4,18 @@
 import { SnakeNamingStrategy } from "typeorm-naming-strategies"
 
 // not needed to run api
-const config = {
+const config = process.env.DATABASE_URL ? {
+  url: process.env.DATABASE_URL,
+  type: 'postgres',
+  ssl: {
+    rejectUnauthorized: false
+  },
+  entities: [
+    'dist/src/**/*.entity.js'
+  ],
+  namingStrategy: new SnakeNamingStrategy(),
+  synchronize: false
+  } : {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT,

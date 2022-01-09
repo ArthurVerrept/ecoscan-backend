@@ -20,7 +20,6 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
           ],
           namingStrategy: new SnakeNamingStrategy(),
           synchronize: false
-
         } : {
           type: 'postgres',
           host: configService.get('POSTGRES_HOST'),
