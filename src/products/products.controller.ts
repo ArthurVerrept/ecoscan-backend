@@ -1,6 +1,6 @@
 import { ClassSerializerInterceptor, Controller, Get, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import JwtAuthGuard from 'src/auth/jwt-auth.guard'
+import JwtAuthGuard from '../auth/jwt-auth.guard'
 import ReviewAggregate from 'src/reviewAggregate/entities/reviewAggregate.entity'
 import Product from './entities/products.entity'
 import { ProductsService } from './products.service'

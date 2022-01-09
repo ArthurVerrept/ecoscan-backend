@@ -25,9 +25,14 @@ If you <u>do not</u> have postgres, use homebrew to download it:
 $ brew install postgresql
 ```
 Once it is downloaded, go ahead and run it:
+
 ```bash
 $ brew services start postgresql
 ```
+*If you are having issues running the th command above use: <i>rm /usr/local/var/postgres/postmaster.pid </i>
+<br> DO NOT DO THIS IF YOU HAVE IMPORTANT DATA RUNNING IN ANY POSTGRES DB AS YOU COULD LOSE IS
+<br>
+<br>
 ### 2. Find Your User:
 Firstly enter the postgres db command line by running:
 ```bash
