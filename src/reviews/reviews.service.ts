@@ -40,9 +40,11 @@ export class ReviewsService {
     
     // TODO: if you have time make this a sql transaction
     async createReview(sustainability: number, quality: number, user: User, barcode: string): Promise<Review> {
-        console.log(typeof sustainability)
         if(sustainability > 5 || quality > 5 || sustainability < 0 || quality < 0) {
             throw new HttpException('sustainability and quality values should be between 0 and 5', 400)
+        }
+        if(sustainability % 1 !== 0 || quality % 1 !== 0) {
+            throw new HttpException('sustainability and quality values should be a whole number', 400)
         }
         let newReview = await this.reviewRepository.create({ sustainability, quality })
         
