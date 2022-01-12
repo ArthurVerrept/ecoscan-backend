@@ -11,7 +11,7 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  async getGoogleUser(@Request() req) {
+  async getUser(@Request() req) {
     return await this.usersService.getUser(req.user.id)
   }
 }
